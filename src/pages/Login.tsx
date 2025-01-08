@@ -1,19 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
-import { useMoniteClient } from '@/hooks/use-monite-client';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AuthError } from '@supabase/supabase-js';
 
 const Login = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
   const { toast } = useToast();
-  const { isReady } = useMoniteClient();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // If already authenticated, redirect to dashboard
+    if (session) {
+      navigate('/dashboard');
+    }
+
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (event === 'SIGNED_IN') {
@@ -37,16 +43,30 @@ const Login = () => {
           });
           navigate('/dashboard');
         }
+      } else if (event === 'SIGNED_OUT') {
+        setError(null);
+      } else if (event === 'USER_UPDATED' && !currentSession) {
+        setError("Authentication failed. Please try again.");
       }
     });
 
-    // If already authenticated, redirect to dashboard
-    if (session) {
-      navigate('/dashboard');
-    }
-
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [session, navigate, toast]);
+
+  const getErrorMessage = (error: AuthError) => {
+    switch (error.message) {
+      case 'Invalid login credentials':
+        return 'Invalid email or password. Please check your credentials.';
+      case 'Email not confirmed':
+        return 'Please verify your email address before signing in.';
+      case 'User not found':
+        return 'No account found with these credentials.';
+      default:
+        return error.message;
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
@@ -67,6 +87,12 @@ const Login = () => {
             />
           </div>
         </div>
+
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         
         <Auth
           supabaseClient={supabase}
