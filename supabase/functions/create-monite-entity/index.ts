@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { MoniteSDK } from 'https://esm.sh/@monite/sdk-api'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -28,18 +27,17 @@ serve(async (req) => {
     )
 
     if (userError || !user) {
-      console.error('Auth error:', userError)
       throw new Error('Unauthorized')
     }
 
+    // Get user metadata
     const { data: profile } = await supabaseClient
       .from('profiles')
       .select('*')
       .eq('user_id', user.id)
       .single()
 
-    console.log('Getting Monite access token')
-    
+    // Get Monite access token
     const moniteApiUrl = Deno.env.get('MONITE_API_URL') || 'https://api.sandbox.monite.com/v1'
     const moniteClientId = Deno.env.get('MONITE_CLIENT_ID')
     const moniteClientSecret = Deno.env.get('MONITE_CLIENT_SECRET')
@@ -67,49 +65,70 @@ serve(async (req) => {
 
     const { access_token } = await tokenResponse.json()
 
-    // Initialize SDK with temporary entity ID for creation
-    const sdk = new MoniteSDK({
-      apiUrl: moniteApiUrl,
-      entityId: 'temp', // Temporary ID that will be replaced
-      fetchToken: async () => ({
-        access_token,
-        token_type: 'Bearer',
-        expires_in: 3600
+    // Create Monite entity with user metadata
+    const metadata = user.user_metadata || {}
+    const createEntityResponse = await fetch(`${moniteApiUrl}/entities`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+        'x-monite-version': '2024-05-25'
+      },
+      body: JSON.stringify({
+        type: metadata.business_type || 'individual',
+        email: user.email,
+        address: {
+          country: metadata.country || 'US',
+          city: metadata.city || 'Los Angeles',
+          state: metadata.state || 'CA',
+          postal_code: metadata.postal_code || '90001',
+          line1: metadata.address_line1 || ''
+        },
+        tax_id: metadata.tax_id || '',
+        [metadata.business_type === 'individual' ? 'individual' : 'organization']: {
+          ...(metadata.business_type === 'individual' 
+            ? {
+                first_name: metadata.first_name || user.email?.split('@')[0] || 'User',
+                last_name: metadata.last_name || 'Name'
+              }
+            : {
+                legal_name: metadata.business_name || 'My Business',
+                company_type: 'corporation'
+              }
+          )
+        }
       })
     })
 
-    console.log('Creating Monite entity')
-    
-    const response = await sdk.api.entities.create({
-      type: 'individual',
-      email: user.email,
-      address: {
-        city: 'los angeles',
-        country: 'US',
-        line1: 'California',
-        postal_code: '90046',
-        state: 'CA'
-      },
-      individual: {
-        first_name: profile?.username?.split(' ')[0] || 'User',
-        last_name: profile?.username?.split(' ')[1] || 'Name'
-      }
-    })
+    if (!createEntityResponse.ok) {
+      throw new Error('Failed to create Monite entity')
+    }
 
-    console.log('Monite entity created:', response)
+    const moniteEntity = await createEntityResponse.json()
 
     // Update the entities table
     const { error: updateError } = await supabaseClient
       .from('entities')
-      .update({ monite_entity_id: response.id })
+      .update({ monite_entity_id: moniteEntity.id })
       .eq('user_id', user.id)
 
     if (updateError) {
       throw new Error('Failed to update entity')
     }
 
+    // Create audit log
+    await supabaseClient
+      .from('monite_audit_logs')
+      .insert({
+        user_id: user.id,
+        entity_id: moniteEntity.id,
+        event_type: 'entity_created',
+        status: 'success',
+        details: moniteEntity
+      })
+
     return new Response(
-      JSON.stringify({ success: true, entity: response }),
+      JSON.stringify({ success: true, entity: moniteEntity }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {

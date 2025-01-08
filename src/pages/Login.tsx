@@ -13,10 +13,10 @@ const Login = () => {
 
   useEffect(() => {
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (event === 'SIGNED_IN') {
         toast({
-          title: "Welcome back!",
+          title: "Welcome!",
           description: "You have successfully signed in.",
         });
         navigate('/dashboard');
@@ -71,6 +71,19 @@ const Login = () => {
           }}
           providers={[]}
           redirectTo={window.location.origin + '/dashboard'}
+          options={{
+            emailRedirectTo: window.location.origin + '/dashboard',
+            metaData: {
+              business_name: '',
+              business_type: 'individual',
+              country: 'US',
+              city: 'Los Angeles',
+              state: 'CA',
+              postal_code: '90001',
+              address_line1: '',
+              tax_id: '',
+            }
+          }}
         />
 
         <div className="flex items-center justify-center space-x-2">
