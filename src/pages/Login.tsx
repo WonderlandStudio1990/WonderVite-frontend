@@ -53,6 +53,7 @@ const Login = () => {
         
         <Auth
           supabaseClient={supabase}
+          view="sign_in"
           appearance={{
             theme: ThemeSupa,
             variables: {
@@ -71,17 +72,26 @@ const Login = () => {
           }}
           providers={[]}
           redirectTo={window.location.origin + '/dashboard'}
-          options={{
-            emailRedirectTo: window.location.origin + '/dashboard',
-            metaData: {
-              business_name: '',
-              business_type: 'individual',
-              country: 'US',
-              city: 'Los Angeles',
-              state: 'CA',
-              postal_code: '90001',
-              address_line1: '',
-              tax_id: '',
+          showLinks={true}
+          magicLink={false}
+          localization={{
+            variables: {
+              sign_in: {
+                email_label: 'Email',
+                password_label: 'Password',
+              },
+              sign_up: {
+                email_label: 'Email',
+                password_label: 'Password',
+                business_name_label: 'Business Name',
+                business_type_label: 'Business Type',
+                country_label: 'Country',
+                city_label: 'City',
+                state_label: 'State',
+                postal_code_label: 'Postal Code',
+                address_line1_label: 'Address',
+                tax_id_label: 'Tax ID',
+              }
             }
           }}
         />
