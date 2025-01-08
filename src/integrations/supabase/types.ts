@@ -215,36 +215,98 @@ export type Database = {
           },
         ]
       }
-      monite_entities: {
+      monite_banking_connections: {
         Row: {
+          connection_details: Json | null
           created_at: string
-          entity_type: string
+          entity_id: string
           id: string
-          metadata: Json | null
-          monite_id: string
+          last_sync_at: string | null
+          provider: string
           status: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          connection_details?: Json | null
           created_at?: string
-          entity_type: string
+          entity_id: string
           id?: string
-          metadata?: Json | null
-          monite_id: string
+          last_sync_at?: string | null
+          provider: string
           status?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          connection_details?: Json | null
+          created_at?: string
+          entity_id?: string
+          id?: string
+          last_sync_at?: string | null
+          provider?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monite_banking_connections_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "monite_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      monite_entities: {
+        Row: {
+          address: Json | null
+          business_type: string
+          contact_details: Json | null
+          created_at: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          monite_id: string
+          onboarding_completed: boolean | null
+          status: string | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string
+          verification_status: string | null
+        }
+        Insert: {
+          address?: Json | null
+          business_type?: string
+          contact_details?: Json | null
+          created_at?: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          monite_id: string
+          onboarding_completed?: boolean | null
+          status?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id: string
+          verification_status?: string | null
+        }
+        Update: {
+          address?: Json | null
+          business_type?: string
+          contact_details?: Json | null
           created_at?: string
           entity_type?: string
           id?: string
           metadata?: Json | null
           monite_id?: string
+          onboarding_completed?: boolean | null
           status?: string | null
+          tax_id?: string | null
           updated_at?: string
           user_id?: string
+          verification_status?: string | null
         }
         Relationships: []
       }

@@ -5,21 +5,38 @@ import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
+import { useMoniteClient } from '@/hooks/use-monite-client';
 
 const Login = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
   const { toast } = useToast();
+  const { isReady } = useMoniteClient();
 
   useEffect(() => {
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (event === 'SIGNED_IN') {
-        toast({
-          title: "Welcome!",
-          description: "You have successfully signed in.",
-        });
-        navigate('/dashboard');
+        // Check if Monite entity exists
+        const { data: entity, error: entityError } = await supabase
+          .from('monite_entities')
+          .select('*')
+          .eq('user_id', currentSession?.user.id)
+          .single();
+
+        if (entityError || !entity) {
+          toast({
+            title: "Welcome!",
+            description: "Please complete your business setup.",
+          });
+          navigate('/onboarding');
+        } else {
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in.",
+          });
+          navigate('/dashboard');
+        }
       }
     });
 
@@ -53,7 +70,6 @@ const Login = () => {
         
         <Auth
           supabaseClient={supabase}
-          view="sign_in"
           appearance={{
             theme: ThemeSupa,
             variables: {
@@ -74,6 +90,7 @@ const Login = () => {
           redirectTo={window.location.origin + '/dashboard'}
           showLinks={true}
           magicLink={false}
+          view="sign_in"
           localization={{
             variables: {
               sign_in: {
