@@ -19,6 +19,8 @@ const nodeTypes = {
   service: ServiceNode,
 };
 
+const nodeClassName = (node) => node.type;
+
 const ProjectFlowChart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -36,9 +38,9 @@ const ProjectFlowChart = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        nodeTypes={nodeTypes}
         fitView
         attributionPosition="bottom-right"
+        nodeTypes={nodeTypes}
         minZoom={0.5}
         maxZoom={1.5}
       >

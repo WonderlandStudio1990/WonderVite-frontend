@@ -8,12 +8,12 @@ export const layerNodes: Node[] = [
     data: {
       label: 'Authentication Layer',
       type: 'auth',
-      description: 'Authentication and authorization with Supabase Auth',
+      description: 'Supabase Authentication & Authorization',
       tools: [
-        'Email/Password',
-        'OAuth Providers',
         'Session Management',
-        'Protected Routes'
+        'Protected Routes',
+        'User Profiles',
+        'RLS Policies'
       ]
     }
   },
@@ -24,10 +24,10 @@ export const layerNodes: Node[] = [
     data: {
       label: 'Layout Layer',
       type: 'layout',
-      description: 'Core layout components and structure',
+      description: 'Core application layout and navigation',
       tools: [
         'DashboardLayout',
-        'Sidebar Navigation',
+        'Sidebar',
         'Header',
         'Settings Layout'
       ]
@@ -40,7 +40,7 @@ export const layerNodes: Node[] = [
     data: {
       label: 'Feature Layer',
       type: 'features',
-      description: 'Main application features and pages',
+      description: 'Main application features',
       tools: [
         'Dashboard',
         'Bill Pay',
@@ -57,11 +57,11 @@ export const layerNodes: Node[] = [
     data: {
       label: 'Services Layer',
       type: 'services',
-      description: 'Core business logic and API integrations',
+      description: 'API Integration & Business Logic',
       tools: [
         'Monite SDK',
-        'Data Services',
-        'API Clients'
+        'React Query',
+        'Edge Functions'
       ]
     }
   },
@@ -72,11 +72,11 @@ export const layerNodes: Node[] = [
     data: {
       label: 'Data Layer',
       type: 'data',
-      description: 'Data persistence and state management',
+      description: 'Data persistence and state',
       tools: [
         'Supabase Database',
-        'React Query',
-        'Local State'
+        'RLS Policies',
+        'Real-time Updates'
       ]
     }
   }
@@ -88,11 +88,11 @@ export const serviceNodes: Node[] = [
     type: 'service',
     position: { x: 50, y: 250 },
     data: {
-      label: 'Bill Pay',
+      label: 'Bill Pay Service',
       service: 'billpay',
       status: 'active',
       hook: 'useBills',
-      description: 'Manage and process vendor payments'
+      description: 'Manage vendor payments and bills'
     }
   },
   {
@@ -100,8 +100,8 @@ export const serviceNodes: Node[] = [
     type: 'service',
     position: { x: 200, y: 250 },
     data: {
-      label: 'Invoices',
-      service: 'invoices',
+      label: 'Invoice Service',
+      service: 'invoice',
       status: 'active',
       hook: 'useInvoices',
       description: 'Generate and manage invoices'
@@ -112,11 +112,11 @@ export const serviceNodes: Node[] = [
     type: 'service',
     position: { x: 350, y: 250 },
     data: {
-      label: 'Capital',
+      label: 'Capital Service',
       service: 'capital',
       status: 'active',
       hook: 'useCapital',
-      description: 'Access working capital solutions'
+      description: 'Working capital solutions'
     }
   },
   {
@@ -124,7 +124,7 @@ export const serviceNodes: Node[] = [
     type: 'service',
     position: { x: 500, y: 250 },
     data: {
-      label: 'Quick Pay',
+      label: 'Quick Pay Service',
       service: 'quickpay',
       status: 'active',
       hook: 'useQuickPay',
