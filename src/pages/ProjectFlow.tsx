@@ -7,7 +7,7 @@ const ProjectFlow = () => {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold text-gray-900">WonderPay Architecture</h1>
         <p className="text-gray-600">
-          Interactive visualization of WonderPay's system architecture and data flow
+          Interactive visualization of WonderPay's system architecture and data flow. Hover over nodes for more information about each component.
         </p>
       </div>
       <ProjectFlowChart />

@@ -29,7 +29,7 @@ const ProjectFlowChart = () => {
   );
 
   return (
-    <div className="h-[800px] bg-gray-50/50 backdrop-blur-sm rounded-lg border border-gray-200">
+    <div className="h-[800px] bg-white/50 backdrop-blur-sm rounded-lg border border-gray-200 shadow-xl">
       <ReactFlow
         nodes={nodes}
         edges={edges}
