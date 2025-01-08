@@ -7,6 +7,17 @@ import { Table, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { useAuth } from '@/providers/AuthProvider';
 import { Loader2 } from "lucide-react";
 
+// Type for combined transaction data
+type CombinedTransaction = {
+  id: string;
+  amount: number;
+  created_at: string;
+  displayName: string; // Common field for display
+  invoice_number: string;
+  status: string;
+  type: 'bill' | 'invoice'; // To differentiate between bills and invoices
+};
+
 const Dashboard = () => {
   const { session } = useAuth();
 
@@ -27,8 +38,29 @@ const Dashboard = () => {
         .order('created_at', { ascending: false })
         .limit(3);
 
+      // Transform and combine transactions
+      const transformedBills = (bills || []).map(bill => ({
+        id: bill.id,
+        amount: bill.amount,
+        created_at: bill.created_at,
+        displayName: bill.vendor_name,
+        invoice_number: bill.invoice_number || '',
+        status: bill.status || 'draft',
+        type: 'bill' as const
+      }));
+
+      const transformedInvoices = (invoices || []).map(invoice => ({
+        id: invoice.id,
+        amount: invoice.amount,
+        created_at: invoice.created_at,
+        displayName: invoice.client_name,
+        invoice_number: invoice.invoice_number,
+        status: invoice.status || 'draft',
+        type: 'invoice' as const
+      }));
+
       // Combine and sort transactions
-      const combined = [...(bills || []), ...(invoices || [])]
+      const combined: CombinedTransaction[] = [...transformedBills, ...transformedInvoices]
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
         .slice(0, 3);
 
@@ -70,7 +102,7 @@ const Dashboard = () => {
                       </div>
                       <div className="flex flex-col">
                         <span className="font-medium text-gray-900 font-inter">
-                          {transaction.description || transaction.client_name || transaction.vendor_name}
+                          {transaction.displayName}
                         </span>
                         <span className="text-sm text-gray-500 font-inter">
                           {transaction.invoice_number}
