@@ -1,140 +1,118 @@
 import { Node, Edge } from '@xyflow/react';
 
-export const initialNodes: Node[] = [
-  // Development Layer
+export const nodes: Node[] = [
   {
-    id: 'dev-layer',
-    type: 'layerNode',
+    id: 'development',
+    type: 'layer',
     position: { x: 250, y: 0 },
-    data: { 
-      label: 'Development Layer',
-      type: 'Development Workflow',
+    data: {
+      label: 'Development Workflow',
+      type: 'development',
       description: 'TypeScript, ESLint, Pre-commit Hooks'
-    },
+    }
   },
-
-  // Auth Layer
   {
-    id: 'auth-layer',
-    type: 'layerNode',
+    id: 'auth',
+    type: 'layer',
     position: { x: 250, y: 100 },
-    data: { 
-      label: 'Auth Layer',
-      type: 'Authentication',
-      description: 'Clerk Auth, JWT & Session Management'
-    },
+    data: {
+      label: 'Auth Layer (Clerk)',
+      type: 'auth',
+      description: 'JWT & Session Management'
+    }
   },
-
-  // Client Layer
   {
-    id: 'client-layer',
-    type: 'layerNode',
+    id: 'client',
+    type: 'layer',
     position: { x: 250, y: 200 },
-    data: { 
+    data: {
       label: 'Client Layer',
-      type: 'Frontend',
-      description: 'Next.js, Subframe Components'
-    },
+      type: 'client',
+      description: 'Next.js & Subframe Components'
+    }
   },
-
-  // Services
   {
-    id: 'quickpay-service',
-    type: 'serviceNode',
+    id: 'quickpay',
+    type: 'service',
     position: { x: 50, y: 300 },
-    data: { 
+    data: {
       label: 'QuickPay',
-      service: 'useMonitePayment',
+      service: 'quickpay',
       status: 'active'
-    },
+    }
   },
   {
-    id: 'capital-service',
-    type: 'serviceNode',
-    position: { x: 250, y: 300 },
-    data: { 
+    id: 'capital',
+    type: 'service',
+    position: { x: 200, y: 300 },
+    data: {
       label: 'Capital',
-      service: 'useMoniteCapital',
+      service: 'capital',
       status: 'active'
-    },
+    }
   },
   {
-    id: 'invoice-service',
-    type: 'serviceNode',
-    position: { x: 450, y: 300 },
-    data: { 
+    id: 'invoice',
+    type: 'service',
+    position: { x: 350, y: 300 },
+    data: {
       label: 'Invoice',
-      service: 'useMoniteInvoice',
+      service: 'invoice',
       status: 'active'
-    },
+    }
   },
-
-  // Validation Layer
   {
-    id: 'validation-layer',
-    type: 'layerNode',
+    id: 'validation',
+    type: 'layer',
     position: { x: 250, y: 400 },
-    data: { 
+    data: {
       label: 'Validation Layer',
-      type: 'Data Validation',
+      type: 'validation',
       description: 'OpenAPI Spec & Middleware'
-    },
+    }
   },
-
-  // Service Layer
   {
-    id: 'service-layer',
-    type: 'layerNode',
+    id: 'service',
+    type: 'layer',
     position: { x: 250, y: 500 },
-    data: { 
+    data: {
       label: 'Service Layer',
-      type: 'Monite Services',
-      description: 'Payment, Capital, Invoice Services'
-    },
+      type: 'service',
+      description: 'Monite SDK & Services'
+    }
   },
-
-  // Monitoring Layer
   {
-    id: 'monitoring-layer',
-    type: 'layerNode',
+    id: 'monitoring',
+    type: 'layer',
     position: { x: 250, y: 600 },
-    data: { 
+    data: {
       label: 'Monitoring Layer',
-      type: 'System Monitoring',
-      description: 'Webhooks, API Monitoring, Usage Limits'
-    },
+      type: 'monitoring',
+      description: 'Webhooks & API Monitoring'
+    }
   },
-
-  // Data Layer
   {
-    id: 'data-layer',
-    type: 'layerNode',
+    id: 'data',
+    type: 'layer',
     position: { x: 250, y: 700 },
-    data: { 
-      label: 'Data Layer',
-      type: 'Supabase',
-      description: 'Data Storage & Real-time Updates'
-    },
-  },
+    data: {
+      label: 'Data Layer (Supabase)',
+      type: 'data',
+      description: 'Real-time Updates & Storage'
+    }
+  }
 ];
 
-export const initialEdges: Edge[] = [
-  // Connect layers vertically
-  { id: 'e1-1', source: 'dev-layer', target: 'auth-layer', animated: true },
-  { id: 'e1-2', source: 'auth-layer', target: 'client-layer', animated: true },
-  
-  // Connect services to client layer
-  { id: 'e2-1', source: 'client-layer', target: 'quickpay-service' },
-  { id: 'e2-2', source: 'client-layer', target: 'capital-service' },
-  { id: 'e2-3', source: 'client-layer', target: 'invoice-service' },
-  
-  // Connect services to validation layer
-  { id: 'e3-1', source: 'quickpay-service', target: 'validation-layer' },
-  { id: 'e3-2', source: 'capital-service', target: 'validation-layer' },
-  { id: 'e3-3', source: 'invoice-service', target: 'validation-layer' },
-  
-  // Connect remaining layers
-  { id: 'e4-1', source: 'validation-layer', target: 'service-layer', animated: true },
-  { id: 'e4-2', source: 'service-layer', target: 'monitoring-layer', animated: true },
-  { id: 'e4-3', source: 'monitoring-layer', target: 'data-layer', animated: true },
+export const edges: Edge[] = [
+  { id: 'e1', source: 'development', target: 'auth', animated: true },
+  { id: 'e2', source: 'auth', target: 'client', animated: true },
+  { id: 'e3', source: 'client', target: 'quickpay' },
+  { id: 'e4', source: 'client', target: 'capital' },
+  { id: 'e5', source: 'client', target: 'invoice' },
+  { id: 'e6', source: 'quickpay', target: 'validation' },
+  { id: 'e7', source: 'capital', target: 'validation' },
+  { id: 'e8', source: 'invoice', target: 'validation' },
+  { id: 'e9', source: 'validation', target: 'service', animated: true },
+  { id: 'e10', source: 'service', target: 'monitoring', animated: true },
+  { id: 'e11', source: 'monitoring', target: 'data', animated: true }
 ];

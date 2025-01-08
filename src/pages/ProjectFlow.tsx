@@ -1,12 +1,12 @@
 import React from 'react';
-import { ProjectFlowChart } from '@/components/project-flow/ProjectFlowChart';
+import ProjectFlowChart from '@/components/project-flow/ProjectFlowChart';
 
 const ProjectFlow = () => {
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">WonderPay Architecture</h1>
-        <p className="text-gray-500 mt-2">
+    <div className="p-6 space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-2xl font-semibold text-gray-900">WonderPay Architecture</h1>
+        <p className="text-gray-600">
           Interactive visualization of WonderPay's system architecture and data flow
         </p>
       </div>

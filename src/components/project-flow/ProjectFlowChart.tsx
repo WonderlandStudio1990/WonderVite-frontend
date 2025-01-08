@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   ReactFlow,
   MiniMap,
@@ -9,26 +9,27 @@ import {
   addEdge,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { initialNodes, initialEdges } from './initial-elements';
+
+import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 import { LayerNode } from './nodes/LayerNode';
 import { ServiceNode } from './nodes/ServiceNode';
 
 const nodeTypes = {
-  layerNode: LayerNode,
-  serviceNode: ServiceNode,
+  layer: LayerNode,
+  service: ServiceNode,
 };
 
-export const ProjectFlowChart = () => {
+const ProjectFlowChart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback((params) => {
-    console.log('New connection:', params);
-    setEdges((eds) => addEdge(params, eds));
-  }, []);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
 
   return (
-    <div style={{ width: '100%', height: '80vh' }} className="bg-gray-50 rounded-lg shadow-inner">
+    <div className="h-[800px] bg-gray-50/50 backdrop-blur-sm rounded-lg border border-gray-200">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -38,11 +39,25 @@ export const ProjectFlowChart = () => {
         nodeTypes={nodeTypes}
         fitView
         attributionPosition="bottom-right"
+        minZoom={0.5}
+        maxZoom={1.5}
       >
+        <MiniMap 
+          nodeColor={(node) => {
+            switch (node.type) {
+              case 'service':
+                return '#818cf8';
+              default:
+                return '#e2e8f0';
+            }
+          }}
+          maskColor="#f8fafc80"
+        />
         <Controls />
-        <MiniMap />
-        <Background gap={12} size={1} />
+        <Background color="#94a3b8" gap={16} />
       </ReactFlow>
     </div>
   );
 };
+
+export default ProjectFlowChart;
