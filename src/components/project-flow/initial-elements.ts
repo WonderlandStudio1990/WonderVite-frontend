@@ -1,6 +1,5 @@
-import { Node, Edge } from '@xyflow/react';
-import { layerNodes, serviceNodes } from './nodes/architecture-nodes';
+import { nodes, edges } from './nodes/architecture-nodes';
 import { architectureEdges } from './edges/architecture-edges';
 
-export const nodes: Node[] = [...layerNodes, ...serviceNodes];
-export const edges: Edge[] = architectureEdges;
+export const nodes = [...layerNodes, ...serviceNodes];
+export const edges = architectureEdges;

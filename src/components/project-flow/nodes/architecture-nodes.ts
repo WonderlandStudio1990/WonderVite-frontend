@@ -2,108 +2,81 @@ import { Node } from '@xyflow/react';
 
 export const layerNodes: Node[] = [
   {
-    id: 'development',
+    id: 'auth',
     type: 'layer',
     position: { x: 250, y: 0 },
     data: {
-      label: 'Development Workflow',
-      type: 'development',
-      description: 'Development tools and processes for code quality',
+      label: 'Authentication Layer',
+      type: 'auth',
+      description: 'Authentication and authorization with Supabase Auth',
       tools: [
-        'TypeScript Compiler',
-        'ESLint + Monite Rules',
-        'Pre-commit Hooks',
-        'OpenAPI Types Generator'
+        'Email/Password',
+        'OAuth Providers',
+        'Session Management',
+        'Protected Routes'
       ]
     }
   },
   {
-    id: 'auth',
+    id: 'layout',
     type: 'layer',
     position: { x: 250, y: 100 },
     data: {
-      label: 'Auth Layer (Clerk)',
-      type: 'auth',
-      description: 'Authentication and session management',
+      label: 'Layout Layer',
+      type: 'layout',
+      description: 'Core layout components and structure',
       tools: [
-        'JWT Template',
-        'Session Management',
-        'Token Generation'
+        'DashboardLayout',
+        'Sidebar Navigation',
+        'Header',
+        'Settings Layout'
       ]
     }
   },
   {
-    id: 'client',
+    id: 'features',
     type: 'layer',
     position: { x: 250, y: 200 },
     data: {
-      label: 'Client Layer',
-      type: 'client',
-      description: 'Frontend UI built with Next.js and Subframe',
+      label: 'Feature Layer',
+      type: 'features',
+      description: 'Main application features and pages',
       tools: [
-        'Next.js',
-        'Subframe Components',
-        'Feature Components'
+        'Dashboard',
+        'Bill Pay',
+        'Invoices',
+        'Capital',
+        'Quick Pay'
       ]
     }
   },
   {
-    id: 'validation',
+    id: 'services',
     type: 'layer',
-    position: { x: 250, y: 400 },
+    position: { x: 250, y: 300 },
     data: {
-      label: 'Validation Layer',
-      type: 'validation',
-      description: 'Data validation using OpenAPI specifications',
+      label: 'Services Layer',
+      type: 'services',
+      description: 'Core business logic and API integrations',
       tools: [
-        'OpenAPI Spec',
-        'Request Validation',
-        'Response Validation'
-      ]
-    }
-  },
-  {
-    id: 'service',
-    type: 'layer',
-    position: { x: 250, y: 500 },
-    data: {
-      label: 'Service Layer',
-      type: 'service',
-      description: 'Core business logic powered by Monite SDK',
-      tools: [
-        'Payment Service',
-        'Working Capital',
-        'Invoice Service'
-      ]
-    }
-  },
-  {
-    id: 'monitoring',
-    type: 'layer',
-    position: { x: 250, y: 600 },
-    data: {
-      label: 'Monitoring Layer',
-      type: 'monitoring',
-      description: 'System monitoring and webhooks',
-      tools: [
-        'Webhook Handlers',
-        'API Monitoring',
-        'Usage Limits'
+        'Monite SDK',
+        'Data Services',
+        'API Clients'
       ]
     }
   },
   {
     id: 'data',
     type: 'layer',
-    position: { x: 250, y: 700 },
+    position: { x: 250, y: 400 },
     data: {
-      label: 'Data Layer (Supabase)',
+      label: 'Data Layer',
       type: 'data',
-      description: 'Data storage and real-time updates',
+      description: 'Data persistence and state management',
       tools: [
-        'Real-time Updates',
-        'Row Level Security',
-        'Data Sync'
+        'Supabase Database',
+        'React Query',
+        'Local State'
       ]
     }
   }
@@ -111,39 +84,51 @@ export const layerNodes: Node[] = [
 
 export const serviceNodes: Node[] = [
   {
-    id: 'quickpay',
+    id: 'billpay',
     type: 'service',
-    position: { x: 50, y: 300 },
+    position: { x: 50, y: 250 },
     data: {
-      label: 'QuickPay',
-      service: 'quickpay',
+      label: 'Bill Pay',
+      service: 'billpay',
       status: 'active',
-      hook: 'useMonitePayment',
-      description: 'Fast payment processing service'
+      hook: 'useBills',
+      description: 'Manage and process vendor payments'
+    }
+  },
+  {
+    id: 'invoices',
+    type: 'service',
+    position: { x: 200, y: 250 },
+    data: {
+      label: 'Invoices',
+      service: 'invoices',
+      status: 'active',
+      hook: 'useInvoices',
+      description: 'Generate and manage invoices'
     }
   },
   {
     id: 'capital',
     type: 'service',
-    position: { x: 250, y: 300 },
+    position: { x: 350, y: 250 },
     data: {
       label: 'Capital',
       service: 'capital',
       status: 'active',
-      hook: 'useMoniteCapital',
-      description: 'Business financing and capital management'
+      hook: 'useCapital',
+      description: 'Access working capital solutions'
     }
   },
   {
-    id: 'invoice',
+    id: 'quickpay',
     type: 'service',
-    position: { x: 450, y: 300 },
+    position: { x: 500, y: 250 },
     data: {
-      label: 'Invoice',
-      service: 'invoice',
+      label: 'Quick Pay',
+      service: 'quickpay',
       status: 'active',
-      hook: 'useMoniteInvoice',
-      description: 'Invoice generation and management'
+      hook: 'useQuickPay',
+      description: 'Fast payment processing'
     }
   }
 ];
