@@ -1,25 +1,36 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks/use-toast';
-import { queryClient } from '@/config/queryClient';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from "@/integrations/supabase/client";
 
 export function useBills() {
+  const queryClient = useQueryClient();
+
   const { data: bills, isLoading, error } = useQuery({
     queryKey: ['bills'],
     queryFn: async () => {
-      console.log('Fetching bills data');
+      console.log('Fetching bills from Supabase');
       const { data, error } = await supabase
         .from('bills')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('due_date', { ascending: true });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching bills:', error);
+        throw error;
+      }
+
       return data;
     },
   });
 
   const createBillMutation = useMutation({
-    mutationFn: async (billData: any) => {
+    mutationFn: async (billData: {
+      vendor_name: string;
+      invoice_number: string;
+      amount: number;
+      due_date: string;
+      description?: string;
+    }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
@@ -53,11 +64,48 @@ export function useBills() {
     },
   });
 
+  const updateBillMutation = useMutation({
+    mutationFn: async ({ id, ...billData }: {
+      id: string;
+      status?: string;
+      amount?: number;
+      due_date?: string;
+      description?: string;
+    }) => {
+      const { data, error } = await supabase
+        .from('bills')
+        .update(billData)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bills'] });
+      toast({
+        title: "Success",
+        description: "Bill updated successfully",
+      });
+    },
+    onError: (error) => {
+      console.error('Error updating bill:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update bill",
+        variant: "destructive",
+      });
+    },
+  });
+
   return {
     bills,
     isLoading,
     error,
     createBill: createBillMutation.mutate,
+    updateBill: updateBillMutation.mutate,
     isCreating: createBillMutation.isPending,
+    isUpdating: updateBillMutation.isPending,
   };
 }

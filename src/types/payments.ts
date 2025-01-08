@@ -24,33 +24,16 @@ export interface Transaction {
   value?: number;
 }
 
-export interface MonitePayable {
+export interface Bill {
   id: string;
-  created_at: string;
-  updated_at: string;
-  status: string;
-  currency: CurrencyEnum;
-  total_amount: number;
-  due_date: string;
-  counterpart_id?: string;
-  metadata?: Record<string, any>;
-}
-
-export interface LineItem {
-  name: string;
-  quantity: number;
+  user_id: string;
+  vendor_name: string;
+  invoice_number?: string;
   amount: number;
-}
-
-export interface MoniteReceivable {
-  id: string;
+  currency?: string;
+  status?: string;
+  due_date: string;
+  description?: string;
   created_at: string;
   updated_at: string;
-  status: ReceivablesStatusEnum;
-  currency: CurrencyEnum;
-  total_amount: number;
-  due_date: string;
-  counterpart_id?: string;
-  metadata?: Record<string, any>;
-  line_items?: LineItem[];
 }

@@ -3,83 +3,50 @@ import { BillPayHeader } from '@/components/bill-pay/BillPayHeader';
 import { BillPayFilters } from '@/components/bill-pay/BillPayFilters';
 import { StatusCard } from '@/components/bill-pay/StatusCard';
 import { TransactionsList } from '@/components/bill-pay/TransactionsList';
-import { Transaction } from '@/types/payments';
+import { useBills } from '@/hooks/use-bills';
+import { Loader2 } from 'lucide-react';
 
 const BillPay = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['draft', 'scheduled', 'paid', 'overdue']);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Placeholder data - will be replaced with backend data
-  const recentTransactions: Transaction[] = [
-    {
-      id: '1',
-      vendorName: '24/7 Productions',
-      invoiceNumber: '240-23',
-      status: 'overdue',
-      dueDate: '2024-10-11',
-      amount: 10500.00,
-      currency: 'USD',
-      date: '2024-01-11',
-      recipient: '24/7 Productions Inc.'
-    },
-    {
-      id: '2',
-      vendorName: 'ABC Services',
-      invoiceNumber: '241-23',
-      status: 'draft',
-      dueDate: '2024-12-15',
-      amount: 5000.00,
-      currency: 'USD',
-      date: '2024-01-15',
-      recipient: 'ABC Services LLC'
-    },
-    {
-      id: '3',
-      vendorName: 'XYZ Corp',
-      invoiceNumber: '242-23',
-      status: 'scheduled',
-      dueDate: '2024-11-20',
-      amount: 7500.00,
-      currency: 'USD',
-      date: '2024-01-20',
-      recipient: 'XYZ Corporation'
-    },
-    {
-      id: '4',
-      vendorName: 'Tech Solutions',
-      invoiceNumber: '243-23',
-      status: 'paid',
-      dueDate: '2024-10-01',
-      amount: 3000.00,
-      currency: 'USD',
-      date: '2024-01-01',
-      recipient: 'Tech Solutions Inc.'
-    },
-  ];
+  const { bills, isLoading, error } = useBills();
 
   const filteredAndSortedTransactions = useMemo(() => {
+    if (!bills) return [];
+
     console.log('Filtering and sorting transactions:', { searchQuery, selectedFilters, sortOrder });
-    return recentTransactions
+    return bills
       .filter(transaction => 
         selectedFilters.includes(transaction.status) &&
-        (transaction.vendorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-         transaction.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase()))
+        (transaction.vendor_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+         transaction.invoice_number?.toLowerCase().includes(searchQuery.toLowerCase()))
       )
       .sort((a, b) => {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
+        const dateA = new Date(a.due_date).getTime();
+        const dateB = new Date(b.due_date).getTime();
         return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
       });
-  }, [recentTransactions, selectedFilters, searchQuery, sortOrder]);
+  }, [bills, selectedFilters, searchQuery, sortOrder]);
 
   const totals = useMemo(() => {
+    if (!bills) return {};
+    
     console.log('Calculating totals for transactions');
-    return recentTransactions.reduce((acc, transaction) => {
-      acc[transaction.status] = (acc[transaction.status] || 0) + transaction.amount;
+    return bills.reduce((acc, transaction) => {
+      acc[transaction.status] = (acc[transaction.status] || 0) + Number(transaction.amount);
       return acc;
     }, {} as Record<string, number>);
-  }, [recentTransactions]);
+  }, [bills]);
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="text-red-500">Error loading bills: {error.message}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -100,7 +67,13 @@ const BillPay = () => {
         setSortOrder={setSortOrder}
       />
 
-      <TransactionsList transactions={filteredAndSortedTransactions} />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <TransactionsList transactions={filteredAndSortedTransactions} />
+      )}
     </div>
   );
 };
