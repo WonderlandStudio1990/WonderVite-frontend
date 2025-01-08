@@ -83,14 +83,6 @@ const Login = () => {
               sign_up: {
                 email_label: 'Email',
                 password_label: 'Password',
-                business_name_label: 'Business Name',
-                business_type_label: 'Business Type',
-                country_label: 'Country',
-                city_label: 'City',
-                state_label: 'State',
-                postal_code_label: 'Postal Code',
-                address_line1_label: 'Address',
-                tax_id_label: 'Tax ID',
               }
             }
           }}
