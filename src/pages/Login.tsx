@@ -4,16 +4,32 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from '@/providers/AuthProvider';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+      if (event === 'SIGNED_IN') {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+        navigate('/dashboard');
+      }
+    });
+
+    // If already authenticated, redirect to dashboard
     if (session) {
       navigate('/dashboard');
     }
-  }, [session, navigate]);
+
+    return () => subscription.unsubscribe();
+  }, [session, navigate, toast]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
@@ -54,7 +70,7 @@ const Login = () => {
             }
           }}
           providers={[]}
-          redirectTo={window.location.origin}
+          redirectTo={window.location.origin + '/dashboard'}
         />
 
         <div className="flex items-center justify-center space-x-2">

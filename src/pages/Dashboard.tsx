@@ -1,39 +1,50 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import OverviewSection from '@/components/dashboard/OverviewSection';
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableRow, TableCell } from "@/components/ui/table";
-
-const mockTransactions = [
-  {
-    id: '1',
-    description: 'Website Development',
-    vendorName: 'Tech Solutions Inc',
-    invoiceNumber: 'INV-2024-001',
-    status: 'paid',
-    date: '2024-03-01',
-    amount: 2500.00
-  },
-  {
-    id: '2',
-    description: 'Marketing Services',
-    vendorName: 'Digital Marketing Pro',
-    invoiceNumber: 'INV-2024-002',
-    status: 'pending',
-    date: '2024-03-05',
-    amount: 1500.00
-  },
-  {
-    id: '3',
-    description: 'Office Supplies',
-    vendorName: 'Office Depot',
-    invoiceNumber: 'INV-2024-003',
-    status: 'overdue',
-    date: '2024-02-28',
-    amount: 750.00
-  }
-];
+import { useAuth } from '@/providers/AuthProvider';
+import { Loader2 } from "lucide-react";
 
 const Dashboard = () => {
+  const { session } = useAuth();
+
+  const { data: transactions, isLoading } = useQuery({
+    queryKey: ['recent-transactions'],
+    queryFn: async () => {
+      const { data: bills } = await supabase
+        .from('bills')
+        .select('*')
+        .eq('user_id', session?.user.id)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      const { data: invoices } = await supabase
+        .from('invoices')
+        .select('*')
+        .eq('user_id', session?.user.id)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      // Combine and sort transactions
+      const combined = [...(bills || []), ...(invoices || [])]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 3);
+
+      return combined;
+    },
+    enabled: !!session?.user.id,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <OverviewSection />
@@ -48,7 +59,7 @@ const Dashboard = () => {
           <CardContent className="p-0">
             <Table>
               <TableBody>
-                {mockTransactions.map((transaction) => (
+                {transactions?.map((transaction) => (
                   <TableRow 
                     key={transaction.id} 
                     className="hover:bg-black/5 cursor-pointer transition-colors duration-200"
@@ -59,10 +70,10 @@ const Dashboard = () => {
                       </div>
                       <div className="flex flex-col">
                         <span className="font-medium text-gray-900 font-inter">
-                          {transaction.description}
+                          {transaction.description || transaction.client_name || transaction.vendor_name}
                         </span>
                         <span className="text-sm text-gray-500 font-inter">
-                          {transaction.invoiceNumber}
+                          {transaction.invoice_number}
                         </span>
                       </div>
                     </TableCell>
@@ -76,7 +87,7 @@ const Dashboard = () => {
                           {transaction.status}
                         </span>
                         <span className="text-sm text-gray-500 font-inter">
-                          {new Date(transaction.date).toLocaleDateString()}
+                          {new Date(transaction.created_at).toLocaleDateString()}
                         </span>
                         <span className="font-medium text-gray-900 font-inter">
                           ${transaction.amount.toLocaleString()}
