@@ -19,6 +19,7 @@ const CardsSettings = lazy(() => import('../pages/settings/CardsSettings'));
 const BankAccountsSettings = lazy(() => import('../pages/settings/BankAccountsSettings'));
 const AccountingSettings = lazy(() => import('../pages/settings/AccountingSettings'));
 const OrganizationSettings = lazy(() => import('../pages/OrganizationSettings'));
+const ProjectFlow = lazy(() => import('../pages/ProjectFlow'));
 
 export const publicRoutes = [
   { path: '/', element: <Home /> },
@@ -58,4 +59,5 @@ export const protectedRoutes = [
     ],
   },
   { path: '/dashboard/organization-settings', element: <OrganizationSettings /> },
+  { path: '/dashboard/project-flow', element: <ProjectFlow /> },
 ];
