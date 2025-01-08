@@ -10,14 +10,12 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { initialNodes, initialEdges } from './initial-elements';
-import { APINode } from './nodes/APINode';
-import { ComponentNode } from './nodes/ComponentNode';
-import { DatabaseNode } from './nodes/DatabaseNode';
+import { LayerNode } from './nodes/LayerNode';
+import { ServiceNode } from './nodes/ServiceNode';
 
 const nodeTypes = {
-  apiNode: APINode,
-  componentNode: ComponentNode,
-  databaseNode: DatabaseNode,
+  layerNode: LayerNode,
+  serviceNode: ServiceNode,
 };
 
 export const ProjectFlowChart = () => {
@@ -30,7 +28,7 @@ export const ProjectFlowChart = () => {
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '80vh' }}>
+    <div style={{ width: '100%', height: '80vh' }} className="bg-gray-50 rounded-lg shadow-inner">
       <ReactFlow
         nodes={nodes}
         edges={edges}
