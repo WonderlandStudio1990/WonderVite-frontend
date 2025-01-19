@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,22 +10,21 @@ import type { BankAccount } from '@/types/financial';
 
 // This will be implemented later when integrating with the APIs
 const useBankAccounts = () => {
-  const [accounts, setAccounts] = useState<BankAccount[]>([]);
-  const isLoading = false;
-  const error = null;
+  const [accounts] = useState<BankAccount[]>([]);
+  const [isLoading] = useState(false);
 
   // Placeholder for future API integration
   const refreshAccounts = async () => {
     console.log('This will refresh accounts from Monite/Finicity/Plaid');
   };
 
-  return { accounts, isLoading, error, refreshAccounts };
+  return { accounts, isLoading, refreshAccounts };
 };
 
 const BankAccountsSettings = () => {
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
-  const { accounts, isLoading, error, refreshAccounts } = useBankAccounts();
+  const { accounts, isLoading } = useBankAccounts();
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -34,7 +35,7 @@ const BankAccountsSettings = () => {
         title: "Success",
         description: "Bank account settings have been successfully saved.",
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Failed to save bank account settings. Please try again.",
@@ -44,14 +45,6 @@ const BankAccountsSettings = () => {
       setIsSaving(false);
     }
   };
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <div className="text-red-500">Error loading bank accounts: {error.message}</div>
-      </div>
-    );
-  }
 
   return (
     <div className="p-6">
@@ -86,9 +79,9 @@ const BankAccountsSettings = () => {
           <div className="space-y-4">
             {accounts.map((account) => (
               <div key={account.id} className="p-4 border rounded-lg">
-                <div className="font-medium">{account.accountName}</div>
+                <div className="font-medium">{account.bankName}</div>
                 <div className="text-sm text-gray-500">
-                  {account.type.charAt(0).toUpperCase() + account.type.slice(1)} •••• 
+                  {account.accountType.charAt(0).toUpperCase() + account.accountType.slice(1)} •••• 
                   {account.accountNumber.slice(-4)}
                 </div>
                 <div className="text-sm text-gray-500">

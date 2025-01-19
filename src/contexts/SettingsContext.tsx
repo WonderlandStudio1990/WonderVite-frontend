@@ -1,5 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+'use client'
+
+import React, { createContext, useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { defaultSettings, SETTINGS_STORAGE_KEY } from './settings-context-variants';
 
 interface Address {
   street: string;
@@ -26,51 +29,43 @@ interface SettingsContextType {
   saveSettings: () => Promise<void>;
 }
 
-const defaultSettings: Settings = {
-  businessName: 'Wonderland Studio Los Angeles LLC',
-  displayName: 'Wonderland Studio',
-  website: 'http://www.thewonderlandstudio.co',
-  description: '',
-  brandColor: '#9b87f5',
-  address: {
-    street: '',
-    unit: '',
-    city: '',
-    state: 'CA',
-    zipCode: '',
-    country: 'US'
-  }
-};
-
-const SETTINGS_STORAGE_KEY = 'app_settings';
-
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
-  const [settings, setSettings] = useState<Settings>(() => {
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
+
+  useEffect(() => {
     // Load settings from localStorage on initial render
-    const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
-    return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
-  });
+    if (typeof window !== 'undefined') {
+      const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (savedSettings) {
+        setSettings(JSON.parse(savedSettings));
+      }
+    }
+  }, []);
 
   // Update localStorage whenever settings change
   useEffect(() => {
-    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    }
   }, [settings]);
 
   const updateSettings = (newSettings: Partial<Settings>) => {
-    setSettings(prev => {
-      const updated = { ...prev, ...newSettings };
-      return updated;
-    });
+    setSettings(prev => ({
+      ...prev,
+      ...newSettings
+    }));
   };
 
   const saveSettings = async () => {
     try {
       // Here you would typically make an API call to save the settings
       await new Promise(resolve => setTimeout(resolve, 1000));
-      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+      }
       console.log('Settings saved:', settings);
       
       toast({
@@ -94,10 +89,4 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useSettings() {
-  const context = useContext(SettingsContext);
-  if (context === undefined) {
-    throw new Error('useSettings must be used within a SettingsProvider');
-  }
-  return context;
-}
+export { useSettings } from './settings-context-variants';

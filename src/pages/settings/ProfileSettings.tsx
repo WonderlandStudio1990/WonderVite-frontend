@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// Removed avatar component since it was cleaned up
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -18,7 +20,7 @@ interface ProfileData {
 
 const ProfileSettings = () => {
   const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false);
+  const [_isSaving, setIsSaving] = useState(false);
   const [profile, setProfile] = useState<ProfileData>({
     firstName: 'Mitch',
     lastName: 'Eisner',
@@ -43,12 +45,12 @@ const ProfileSettings = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
         title: "Success",
-        description: "Your profile has been successfully updated.",
+        description: "Profile settings have been successfully saved.",
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
-        description: "Failed to update profile. Please try again.",
+        description: "Failed to save profile settings. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -64,12 +66,15 @@ const ProfileSettings = () => {
         <Card className="p-6 space-y-8">
           <div className="space-y-4">
             <h2 className="text-lg text-gray-600">Picture</h2>
-            <Avatar className="w-16 h-16">
-              <AvatarImage src={profile.avatar} />
-              <AvatarFallback className="bg-gray-100 text-gray-500 text-2xl">
-                {profile.firstName?.[0]?.toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+              {profile.avatar ? (
+                <img src={profile.avatar} alt="Profile" className="w-full h-full rounded-full" />
+              ) : (
+                <span className="text-gray-500 text-2xl">
+                  {profile.firstName?.[0]?.toUpperCase()}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">

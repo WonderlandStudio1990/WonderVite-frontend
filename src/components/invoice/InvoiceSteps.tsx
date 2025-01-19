@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -9,12 +11,12 @@ interface InvoiceStepsProps {
   steps: { title: string; component: React.ReactNode }[];
 }
 
-const InvoiceSteps: React.FC<InvoiceStepsProps> = ({
+const InvoiceSteps = ({
   currentStep,
   onNext,
   onBack,
   steps
-}) => {
+}: InvoiceStepsProps) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow">

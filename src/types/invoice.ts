@@ -1,45 +1,40 @@
+export interface CompanyDetails {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  taxId?: string;
+}
+
+export interface PaymentDetails {
+  bankName?: string;
+  accountNumber?: string;
+  routingNumber?: string;
+  paymentMethod?: 'bank' | 'card' | 'other';
+  notes?: string;
+}
+
 export interface InvoiceItem {
+  id: string;
   description: string;
   quantity: number;
-  price: number;
+  unitPrice: number;
+  amount: number;
 }
 
 export interface InvoiceData {
-  // Company Details
-  email: string;
-  companyName: string;
-  logo?: File;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
-  taxId: string;
-
-  // Invoice Details
-  currency: string;
   items: InvoiceItem[];
-  note: string;
-  discount: number;
+  subtotal: number;
   tax: number;
-
-  // Payment Details
-  bankName: string;
-  accountNumber: string;
-  accountName: string;
-  ifscCode: string;
-  routingNumber: string;
-  swiftCode: string;
-
-  // Invoice Terms
-  invoiceNumber: string;
-  issueDate: string;
+  total: number;
   dueDate: string;
-  clientName: string;
-  clientEmail: string;
-  clientAddress: string;
+  companyDetails: CompanyDetails;
+  paymentDetails?: PaymentDetails;
+  status: 'draft' | 'pending' | 'paid';
+  createdAt: string;
+  updatedAt: string;
+}
 
-  // These were missing and causing the error
-  notes: string;
-  date: string;
+export interface Invoice extends InvoiceData {
+  id: string;
 }

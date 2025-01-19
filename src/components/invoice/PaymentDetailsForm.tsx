@@ -1,77 +1,72 @@
-import React from 'react';
+'use client';
+
+import { type PaymentDetails } from '@/types/invoice';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { InvoiceData } from '@/types/invoice';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface PaymentDetailsFormProps {
-  data: InvoiceData;
-  onChange: (field: keyof InvoiceData, value: any) => void;
+  value: PaymentDetails;
+  onChange: (value: PaymentDetails) => void;
 }
 
-const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({ data, onChange }) => {
+export default function PaymentDetailsForm({ value, onChange }: PaymentDetailsFormProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <Label htmlFor="bankName">Bank Name</Label>
-        <Input
-          id="bankName"
-          placeholder="Enter bank name"
-          value={data.bankName}
-          onChange={(e) => onChange('bankName', e.target.value)}
-        />
+        <Label>Payment Method</Label>
+        <Select
+          value={value.paymentMethod}
+          onValueChange={(paymentMethod) => onChange({ ...value, paymentMethod: paymentMethod as PaymentDetails['paymentMethod'] })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select payment method" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="bank">Bank Transfer</SelectItem>
+            <SelectItem value="card">Credit Card</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      <div>
-        <Label htmlFor="accountName">Account Name</Label>
-        <Input
-          id="accountName"
-          placeholder="Enter account name"
-          value={data.accountName}
-          onChange={(e) => onChange('accountName', e.target.value)}
-        />
-      </div>
+      {value.paymentMethod === 'bank' && (
+        <>
+          <div>
+            <Label>Bank Name</Label>
+            <Input
+              type="text"
+              value={value.bankName}
+              onChange={(e) => onChange({ ...value, bankName: e.target.value })}
+            />
+          </div>
+          <div>
+            <Label>Account Number</Label>
+            <Input
+              type="text"
+              value={value.accountNumber}
+              onChange={(e) => onChange({ ...value, accountNumber: e.target.value })}
+            />
+          </div>
+          <div>
+            <Label>Routing Number</Label>
+            <Input
+              type="text"
+              value={value.routingNumber}
+              onChange={(e) => onChange({ ...value, routingNumber: e.target.value })}
+            />
+          </div>
+        </>
+      )}
 
       <div>
-        <Label htmlFor="accountNumber">Account Number</Label>
+        <Label>Notes</Label>
         <Input
-          id="accountNumber"
-          placeholder="Enter account number"
-          value={data.accountNumber}
-          onChange={(e) => onChange('accountNumber', e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="routingNumber">Routing Number</Label>
-        <Input
-          id="routingNumber"
-          placeholder="Enter routing number"
-          value={data.routingNumber}
-          onChange={(e) => onChange('routingNumber', e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="swiftCode">SWIFT Code</Label>
-        <Input
-          id="swiftCode"
-          placeholder="Enter SWIFT code"
-          value={data.swiftCode}
-          onChange={(e) => onChange('swiftCode', e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="ifscCode">IFSC Code</Label>
-        <Input
-          id="ifscCode"
-          placeholder="Enter IFSC code"
-          value={data.ifscCode}
-          onChange={(e) => onChange('ifscCode', e.target.value)}
+          type="text"
+          value={value.notes}
+          onChange={(e) => onChange({ ...value, notes: e.target.value })}
         />
       </div>
     </div>
   );
-};
-
-export default PaymentDetailsForm;
+}

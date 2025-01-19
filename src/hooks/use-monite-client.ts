@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useMoniteToken } from './use-monite-token';
 import { useToast } from './use-toast';
 
@@ -7,7 +7,7 @@ export function useMoniteClient() {
   const { token, isLoading, refreshToken } = useMoniteToken();
   const { toast } = useToast();
 
-  useEffect(() => {
+  const checkAuthStatus = useCallback(() => {
     if (token && !isLoading) {
       setIsReady(true);
     } else if (!isLoading && !token) {
@@ -17,7 +17,11 @@ export function useMoniteClient() {
         variant: "destructive",
       });
     }
-  }, [token, isLoading]);
+  }, [token, isLoading, toast]);
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
 
   const handleApiCall = async (endpoint: string, options: RequestInit = {}) => {
     if (!token) {

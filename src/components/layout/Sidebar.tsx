@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { 
   Home,
-  Receipt, 
   ArrowUpRight,
   Sparkles,
   Users, 
@@ -30,7 +29,7 @@ const navigation = [
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { settings } = useSettings();
+  const settings = useSettings();
   const { toast } = useToast();
 
   const handleOrgClick = () => {

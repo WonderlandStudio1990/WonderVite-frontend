@@ -1,19 +1,21 @@
+'use client'
+
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
-const Home = () => {
-  const navigate = useNavigate();
+export default function Home() {
+  const router = useRouter();
 
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/dashboard');
+        router.push('/dashboard');
       }
     });
-  }, [navigate]);
+  }, [router]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#FFFFFF] px-4 py-16">
@@ -44,26 +46,22 @@ const Home = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-          <Link to="/login">
-            <Button 
-              variant="default"
-              className="w-full sm:w-auto bg-[#1A1F2C] hover:bg-[#403E43] text-white rounded-full px-8 py-3 text-base font-normal h-auto transition-all duration-300 hover:shadow-lg"
-            >
-              Log In
-            </Button>
-          </Link>
-          <Link to="/login">
-            <Button 
-              variant="outline"
-              className="w-full sm:w-auto bg-[#9b87f5] hover:bg-[#8B5CF6] text-white border-none rounded-full px-8 py-3 text-base font-normal h-auto transition-all duration-300 hover:shadow-lg"
-            >
-              Inquire
-            </Button>
-          </Link>
+          <Button 
+            variant="default"
+            className="w-full sm:w-auto bg-[#1A1F2C] hover:bg-[#403E43] text-white rounded-full px-8 py-3 text-base font-normal h-auto transition-all duration-300 hover:shadow-lg"
+            onClick={() => router.push('/login')}
+          >
+            Log In
+          </Button>
+          <Button 
+            variant="outline"
+            className="w-full sm:w-auto bg-[#9b87f5] hover:bg-[#8B5CF6] text-white border-none rounded-full px-8 py-3 text-base font-normal h-auto transition-all duration-300 hover:shadow-lg"
+            onClick={() => router.push('/login')}
+          >
+            Inquire
+          </Button>
         </div>
       </div>
     </div>
   );
-};
-
-export default Home;
+}

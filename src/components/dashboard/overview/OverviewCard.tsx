@@ -1,15 +1,18 @@
+'use client';
+
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { LucideIcon } from 'lucide-react';
 
-interface OverviewCardProps {
+export interface OverviewCardProps {
   title: string;
-  value: number;
-  Icon: LucideIcon;
+  amount: number;
+  isLoading: boolean;
+  Icon?: LucideIcon;
   trend?: 'positive' | 'negative' | 'neutral';
 }
 
-const OverviewCard = ({ title, value, Icon, trend = 'neutral' }: OverviewCardProps) => {
+const OverviewCard = ({ title, amount, isLoading, Icon, trend = 'neutral' }: OverviewCardProps) => {
   const getTrendColor = () => {
     switch (trend) {
       case 'positive':
@@ -21,16 +24,29 @@ const OverviewCard = ({ title, value, Icon, trend = 'neutral' }: OverviewCardPro
     }
   };
 
+  if (isLoading) {
+    return (
+      <Card className="p-6 bg-white/50 backdrop-blur-sm">
+        <div className="animate-pulse">
+          <div className="h-4 w-24 bg-gray-200 rounded mb-2"></div>
+          <div className="h-6 w-32 bg-gray-200 rounded"></div>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-6 bg-white/50 backdrop-blur-sm hover:bg-white/60 transition-colors">
       <div className="flex items-center gap-4">
-        <div className={`p-3 rounded-lg ${getTrendColor()} bg-gray-50`}>
-          <Icon className="h-6 w-6" />
-        </div>
+        {Icon && (
+          <div className={`p-3 rounded-lg ${getTrendColor()} bg-gray-50`}>
+            <Icon className="h-6 w-6" />
+          </div>
+        )}
         <div>
           <div className="text-sm text-gray-500 mb-1">{title}</div>
           <div className="text-2xl font-semibold">
-            ${value.toLocaleString()}
+            ${amount.toLocaleString()}
           </div>
         </div>
       </div>

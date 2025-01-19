@@ -1,22 +1,28 @@
+'use client'
+
 import React from 'react';
-import { useLocation, Outlet } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import SettingsSidebar from './SettingsSidebar';
-import StatusDisplay from '../debug/StatusDisplay';
 
-const DashboardLayout = () => {
-  const location = useLocation();
-  const isSettingsPage = location.pathname.includes('/dashboard/organization-settings') || 
-                        location.pathname.includes('/dashboard/settings');
-  const isInvoiceGenerator = location.pathname === '/bill-pay/generate';
+import { usePathname } from 'next/navigation';
+
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+}
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const pathname = usePathname() || '';
+  const isSettingsPage = pathname.includes('/dashboard/organization-settings') || 
+                        pathname.includes('/dashboard/settings');
+  const isInvoiceGenerator = pathname === '/dashboard/bill-pay/generate';
 
   // If we're on the invoice generator page, render without sidebars
   if (isInvoiceGenerator) {
     return (
       <>
-        <Outlet />
-        <StatusDisplay />
+        {children}
+
       </>
     );
   }
@@ -32,12 +38,10 @@ const DashboardLayout = () => {
           <Sidebar />
         )}
         <main className="flex-1 overflow-y-auto px-6 backdrop-blur-md bg-white/50">
-          <Outlet />
+          {children}
         </main>
       </div>
-      <StatusDisplay />
+      {/* StatusDisplay component removed */}
     </div>
   );
 };
-
-export default DashboardLayout;

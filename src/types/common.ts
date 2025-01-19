@@ -1,6 +1,5 @@
-import { CurrencyEnum } from '@monite/sdk-api';
-
 export type PaymentMethod = 'card' | 'bank' | 'ach' | 'wire' | 'international_wire' | 'wonderpay';
+export type CurrencyEnum = 'USD' | 'EUR' | 'GBP';
 export type PaymentTerm = '30' | '60' | '90';
 
 export interface PaymentDetails {
@@ -20,4 +19,14 @@ export interface Transaction {
   currency: string;
   date: string;
   recipient: string;
+}
+
+export interface Card {
+  id: string;
+  type: 'credit' | 'debit';
+  status: 'active' | 'inactive';
+  lastFour: string;
+  expiryMonth: number;
+  expiryYear: number;
+  cardholderName: string;
 }

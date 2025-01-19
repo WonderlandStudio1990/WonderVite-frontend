@@ -21,6 +21,8 @@ const mockReceivables: Record<string, Array<{
   status: InvoiceStatus;
   dueDate: string;
   amount: number;
+  currency: string;
+  date: string;
   details: {
     items: Array<{
       description: string;
@@ -41,6 +43,8 @@ const mockReceivables: Record<string, Array<{
       status: 'draft',
       dueDate: '2024-11-15',
       amount: 18500.00,
+      currency: 'USD',
+      date: '2024-11-01',
       details: {
         items: [
           { description: 'Design Services', quantity: 1, rate: 15000, amount: 15000 },
@@ -60,6 +64,8 @@ const mockReceivables: Record<string, Array<{
       status: 'sent',
       dueDate: '2024-10-30',
       amount: 12000.00,
+      currency: 'USD',
+      date: '2024-10-15',
       details: {
         items: [
           { description: 'Property Management - Q4', quantity: 1, rate: 12000, amount: 12000 }
@@ -76,6 +82,8 @@ const mockReceivables: Record<string, Array<{
       status: 'paid',
       dueDate: '2024-10-15',
       amount: 25000.00,
+      currency: 'USD',
+      date: '2024-10-01',
       details: {
         items: [
           { description: 'Project Planning', quantity: 1, rate: 15000, amount: 15000 },

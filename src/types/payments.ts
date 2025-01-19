@@ -1,4 +1,4 @@
-import { CurrencyEnum, PaymentMethod as MonitePaymentMethod, ReceivablesStatusEnum } from '@monite/sdk-api';
+import { type CurrencyEnum as _CurrencyEnum, type PaymentMethod as _MonitePaymentMethod, type ReceivablesStatusEnum as _ReceivablesStatusEnum } from '@monite/sdk-api';
 
 export type PaymentMethod = 'ach' | 'wire' | 'international_wire' | 'card' | 'wonderpay';
 export type PaymentTerm = '30' | '60' | '90';
@@ -28,12 +28,12 @@ export interface Bill {
   id: string;
   user_id: string;
   vendor_name: string;
-  invoice_number?: string;
+  invoice_number: string | null;
   amount: number;
-  currency?: string;
-  status?: string;
+  currency: string | null;
+  status: string | null;
   due_date: string;
-  description?: string;
+  description: string | null;
   created_at: string;
   updated_at: string;
 }

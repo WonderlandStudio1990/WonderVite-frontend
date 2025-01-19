@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+'use client'
+
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { PaymentDialog } from '@/components/payments/PaymentDialog';
 import { toast } from '@/hooks/use-toast';
@@ -22,12 +24,12 @@ export const TransactionItem = ({
   dueDate,
   amount
 }: TransactionItemProps) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
 
   const handleClick = () => {
     console.log('Navigating to invoice detail:', id);
-    navigate(`/dashboard/bill-pay/${id}`);
+    router.push(`/dashboard/bill-pay/${id}`);
   };
 
   const handlePaymentComplete = () => {
@@ -51,6 +53,7 @@ export const TransactionItem = ({
         />
         
         <TransactionDetails 
+          invoiceId={id}
           status={status}
           dueDate={dueDate}
           amount={amount}

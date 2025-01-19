@@ -1,13 +1,9 @@
-import { PayableStateEnum, CurrencyEnum } from '@monite/sdk-api';
-
-export interface MonitePayable {
+export interface Payable {
   id: string;
-  created_at: string;
-  updated_at: string;
-  status: PayableStateEnum;
-  currency: CurrencyEnum;
-  total_amount: number;
+  amount: number;
+  currency: string;
   due_date: string;
-  counterpart_id?: string;
-  metadata?: Record<string, any>;
+  status: 'draft' | 'pending' | 'paid' | 'overdue';
+  vendor_name: string;
+  invoice_number: string;
 }

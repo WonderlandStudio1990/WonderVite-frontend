@@ -1,76 +1,40 @@
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { useState } from "react";
-import { PaymentMethod, PaymentTerm } from "@/types/payments";
-import { PaymentOptions } from "./PaymentOptions";
-import { StandardPaymentForm } from "./StandardPaymentForm";
-import { WonderPayCapitalForm } from "./WonderPayCapitalForm";
-import { PaymentHeader } from "./PaymentHeader";
+'use client';
 
-interface PaymentDialogProps {
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PaymentMethodSelector, type PaymentMethod } from './PaymentMethodSelector';
+import { PaymentSummary } from './PaymentSummary';
+import { useState } from 'react';
+
+export interface PaymentDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   amount: number;
   onPaymentComplete: () => void;
 }
 
-export function PaymentDialog({
-  open,
-  onOpenChange,
-  amount,
-  onPaymentComplete
-}: PaymentDialogProps) {
+export function PaymentDialog({ open, onOpenChange, amount, onPaymentComplete }: PaymentDialogProps) {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>();
-  const [showCapital, setShowCapital] = useState(false);
-  const [selectedTerm, setSelectedTerm] = useState<PaymentTerm>();
-
-  console.log('PaymentDialog render:', { amount, selectedMethod, showCapital });
-
-  const handlePayment = async () => {
-    console.log('Processing payment:', { amount, method: selectedMethod, term: selectedTerm });
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      onPaymentComplete();
-      onOpenChange(false);
-      console.log('Payment processed successfully');
-    } catch (error) {
-      console.error('Payment processing error:', error);
-    }
-  };
 
   const handleMethodSelect = (method: PaymentMethod) => {
     setSelectedMethod(method);
-    console.log('Selected payment method:', method);
+    onPaymentComplete();
   };
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[85vh]">
-        <div className="space-y-6 p-6 bg-white/80 backdrop-blur-lg">
-          <PaymentHeader title="Pay" />
-          
-          <PaymentOptions 
-            showCapital={showCapital}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Payment Details</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <PaymentSummary amount={amount} />
+          <PaymentMethodSelector
+            amount={amount}
             selectedMethod={selectedMethod}
-            onSelectStandardPayment={() => {
-              setShowCapital(false);
-              handleMethodSelect('ach');
-            }}
-            onSelectCapital={() => {
-              setShowCapital(true);
-              console.log('Showing WonderPay Capital options');
-            }}
+            onMethodSelect={handleMethodSelect}
           />
-
-          {!showCapital ? (
-            <StandardPaymentForm 
-              amount={amount}
-              onPayment={handlePayment}
-            />
-          ) : (
-            <WonderPayCapitalForm />
-          )}
         </div>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   );
 }

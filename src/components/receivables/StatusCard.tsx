@@ -4,10 +4,10 @@ import { Circle } from "lucide-react";
 interface StatusCardProps {
   title: string;
   amount: number;
-  status: 'draft' | 'sent' | 'paid';
+  status?: 'draft' | 'sent' | 'paid';
 }
 
-export const StatusCard = ({ title, amount, status }: StatusCardProps) => {
+export function StatusCard({ title, amount, status = 'draft' }: StatusCardProps) {
   const getStatusColor = () => {
     switch (status) {
       case 'draft': return 'text-gray-500';
@@ -42,4 +42,4 @@ export const StatusCard = ({ title, amount, status }: StatusCardProps) => {
       </CardContent>
     </Card>
   );
-};
+}

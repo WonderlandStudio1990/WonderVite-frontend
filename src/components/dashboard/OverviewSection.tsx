@@ -1,59 +1,79 @@
+'use client';
+
 import React from 'react';
-import { ArrowDown, ArrowUp, Wallet, LayoutDashboard } from "lucide-react";
+import { ArrowDown, ArrowUp } from 'lucide-react';
 import OverviewCard from './overview/OverviewCard';
 import PeriodSelector from './overview/PeriodSelector';
 import TransactionsChart from './overview/TransactionsChart';
+import { Transaction } from '@/types/financial';
 
-const mockChartData = Array.from({ length: 30 }, (_, i) => ({
-  date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  value: Math.floor(Math.random() * 10000)
-}));
+interface OverviewSectionProps {
+  transactions: Transaction[];
+  isLoading: boolean;
+}
 
-const OverviewSection = () => {
+export function OverviewSection({ transactions, isLoading }: OverviewSectionProps) {
   const [selectedPeriod, setSelectedPeriod] = React.useState('30');
 
+  const metrics = React.useMemo(() => {
+    const totalIncome = transactions
+      .filter(t => t.type === 'income')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalExpenses = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+    const netIncome = totalIncome - totalExpenses;
+
+    return {
+      totalIncome,
+      totalExpenses,
+      netIncome
+    };
+  }, [transactions]);
+
   return (
-    <div className="space-y-8 pt-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard className="h-6 w-6 text-gray-500" />
-          <h1 className="text-2xl font-semibold text-gray-900">Overview</h1>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-bold">Overview</h2>
+          <p className="text-gray-500">Track your business performance</p>
         </div>
-        <div className="flex items-center gap-4">
-          <PeriodSelector 
-            selectedPeriod={selectedPeriod}
-            onPeriodChange={setSelectedPeriod}
-          />
-        </div>
+        <PeriodSelector 
+          value={selectedPeriod}
+          onChange={setSelectedPeriod}
+        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <OverviewCard
-          title="Balance"
-          value={25000}
-          Icon={Wallet}
-          trend="neutral"
-        />
-        <OverviewCard
-          title="Income"
-          value={12500}
-          Icon={ArrowDown}
+          title="Total Income"
+          amount={metrics.totalIncome}
+          isLoading={isLoading}
+          Icon={ArrowUp}
           trend="positive"
         />
         <OverviewCard
-          title="Expenses"
-          value={8750}
-          Icon={ArrowUp}
+          title="Total Expenses"
+          amount={metrics.totalExpenses}
+          isLoading={isLoading}
+          Icon={ArrowDown}
           trend="negative"
+        />
+        <OverviewCard
+          title="Net Income"
+          amount={metrics.netIncome}
+          isLoading={isLoading}
+          trend={metrics.netIncome >= 0 ? 'positive' : 'negative'}
         />
       </div>
 
-      <TransactionsChart 
-        transactions={mockChartData}
-        isLoading={false}
+      <TransactionsChart
+        transactions={transactions}
+        period={selectedPeriod}
+        isLoading={isLoading}
       />
     </div>
   );
-};
-
-export default OverviewSection;
+}
