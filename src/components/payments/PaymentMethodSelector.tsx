@@ -1,36 +1,27 @@
-'use client';
-
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-export type PaymentMethod = 'card' | 'bank';
+import React from 'react';
+import { PaymentMethod } from '@/types/common';
+import { Button } from '@/components/ui/button';
 
 export interface PaymentMethodSelectorProps {
-  amount: number;
+  onSelect: (method: PaymentMethod) => void;
   selectedMethod?: PaymentMethod;
-  onMethodSelect: (method: PaymentMethod) => void;
 }
 
-export function PaymentMethodSelector({ amount, selectedMethod, onMethodSelect }: PaymentMethodSelectorProps) {
+export function PaymentMethodSelector({ onSelect, selectedMethod }: PaymentMethodSelectorProps) {
+  const methods: PaymentMethod[] = ['card', 'bank', 'ach', 'wire', 'international_wire', 'wonderpay'];
+
   return (
-    <div className="space-y-4">
-      <Select value={selectedMethod} onValueChange={(value) => onMethodSelect(value as PaymentMethod)}>
-        <SelectTrigger>
-          <SelectValue placeholder="Select payment method" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="card">Credit Card</SelectItem>
-          <SelectItem value="bank">Bank Transfer</SelectItem>
-        </SelectContent>
-      </Select>
-      <Button 
-        onClick={() => selectedMethod && onMethodSelect(selectedMethod)}
-        disabled={!selectedMethod}
-        className="w-full"
-      >
-        Pay ${amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-      </Button>
+    <div className="grid grid-cols-2 gap-4">
+      {methods.map((method) => (
+        <Button
+          key={method}
+          variant={selectedMethod === method ? 'default' : 'outline'}
+          onClick={() => onSelect(method)}
+          className="w-full"
+        >
+          {method.replace('_', ' ').toUpperCase()}
+        </Button>
+      ))}
     </div>
   );
 }

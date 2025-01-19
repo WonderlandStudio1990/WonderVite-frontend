@@ -44,22 +44,19 @@ src/
 
 ## Development Guidelines
 
+### Code Quality Checks
+- Run `npm run check-all` to perform comprehensive checks
+- This runs TypeScript type checking, ESLint, and Next.js build in sequence
+- Catches type errors, linting issues, and build problems in one command
+- Use before committing changes to ensure code quality
+
 ### Development Server
 - Start with `npm run dev`
 - Runs on http://localhost:3000 by default
 - Long-running process that will time out in the terminal after 30s (this is expected)
 - Server will continue running despite the timeout message
 
-- When using React Flow components:
-  - Import Handle and Position from 'reactflow'
-  - Add isConnectable prop to Handle components
-  - Use 'use client' directive for flow components
-  - Install reactflow package instead of @reactflow/core
-- When using Recharts with Next.js:
-  - Use 'use client' directive for chart components
-  - Import specific chart components directly from 'recharts'
-  - Use useChart hook for configuration
-  - Wrap chart in a div with fixed height
+
 - When using React Day Picker with Next.js:
   - Use 'use client' directive for calendar components
   - Import DayPicker directly from 'react-day-picker'
@@ -171,9 +168,250 @@ type: amount >= 0 ? 'income' : 'expense'
 
 ## Current Migration Status
 - ✅ Migrated from Vite to Next.js App Router
+- ✅ Converted to server components where possible
+- ✅ Updated routing to use App Router conventions
+- ✅ Integrated Supabase auth with Next.js middleware
+- 🔄 Ongoing: Moving remaining React components to server components where possible
+- 🔄 Ongoing: Optimizing data fetching with server components
+
+### Page Migration Pattern
+When migrating pages to Next.js App Router:
+1. Place providers (Auth, Query) at root layout
+2. Mark dashboard pages as client components with 'use client'
+3. Keep page components minimal:
+```tsx
+'use client';
+import dynamic from 'next/dynamic';
+import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
+
+const ComponentPage = dynamic(
+  () => import('@/components/path/ComponentPage').then(mod => mod.ComponentPage),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    ),
+    ssr: false
+  }
+);
+
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ComponentPage />
+    </QueryClientProvider>
+  );
+}
+```
+4. Move complex logic to component files
+5. Use dynamic imports with ssr: false to prevent prerendering errors
+6. Keep providers at layout level, not page level
+7. Handle client-side features (hooks, state) in component files
+8. Add proper loading and error states for client components
+When migrating pages to Next.js App Router:
+1. Place providers (Auth, Query) at root layout
+2. Mark dashboard pages as client components with 'use client'
+3. Keep page components minimal:
+```tsx
+'use client';
+import { ComponentName } from '@/components/path/ComponentName';
+export default function Page() {
+  return <ComponentName />;
+}
+```
+4. Move complex logic to component files
+5. Use dynamic imports only when needed for code splitting
+6. Keep providers at layout level, not page level
+7. Handle client-side features (hooks, state) in component files
+8. Add proper loading and error states for client components
+
+### Client Component Guidelines
+- Add 'use client' directive at the top of the file
+- Handle loading states properly (return null or loading indicator)
+- Check for required client features (e.g., isReady from hooks)
+- Keep data fetching logic in components, not pages
+- Wrap components that use React Query with QueryClientProvider
+- Place QueryClientProvider at the closest possible level to where it's needed
+- Add proper loading and error states for client components
+- Keep page components focused on composition and provider setup
+- Use dynamic imports with ssr: false for components that can't be prerendered
+- Add 'use client' directive at the top of the file
+- Handle loading states properly (return null or loading indicator)
+- Check for required client features (e.g., isReady from hooks)
+- Keep data fetching logic in components, not pages
+- Wrap components that use React Query with QueryClientProvider
+- Place QueryClientProvider at the closest possible level to where it's needed
+- Add proper loading and error states for client components
+- Keep page components focused on composition and provider setup
+- Add 'use client' directive at the top of the file
+- Handle loading states properly (return null or loading indicator)
+- Check for required client features (e.g., isReady from hooks)
+- Keep data fetching logic in components, not pages
+- Wrap components that use React Query with QueryClientProvider
+- Place QueryClientProvider at the closest possible level to where it's needed
+- Add 'use client' directive at the top of the file
+- Handle loading states properly (return null or loading indicator)
+- Check for required client features (e.g., isReady from hooks)
+- Keep data fetching logic in components, not pages
+When migrating pages to Next.js App Router:
+1. Place providers (Auth, Query) at root layout
+2. Mark dashboard pages as client components with 'use client'
+3. Keep page components minimal:
+```tsx
+'use client';
+import { ComponentName } from '@/components/path/ComponentName';
+export default function Page() {
+  return <ComponentName />;
+}
+```
+4. Move complex logic to component files
+5. Use dynamic imports only when needed for code splitting
+6. Keep providers at layout level, not page level
+
+### Common Mistakes to Avoid
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+- Don't use unstable or deprecated Next.js config options
+- Keep page components minimal and focused on composition
+- Match import/export styles (named vs default)
+
+### Prerendering Error Solutions
+- Always use dynamic imports with ssr: false for client components
+- Add loading states with Loader2 component
+- Wrap data fetching components with QueryClientProvider
+- Keep client-side logic in component files, not pages
+- Use .then(mod => mod.ComponentName) for named exports
+- Apply this pattern to ALL dashboard pages consistently
+- Don't mix different patterns - use the same approach everywhere
+- Check all pages in /dashboard/**/*.tsx for consistency
+- Remember to pass required props even with dynamic imports
+- Always use dynamic imports with ssr: false for client components
+- Add loading states with Loader2 component
+- Wrap data fetching components with QueryClientProvider
+- Keep client-side logic in component files, not pages
+- Use .then(mod => mod.ComponentName) for named exports
+- Apply this pattern to ALL dashboard pages consistently
+- Don't mix different patterns - use the same approach everywhere
+- Check all pages in /dashboard/**/*.tsx for consistency
+- Always use dynamic imports with ssr: false for client components
+- Add loading states with Loader2 component
+- Wrap data fetching components with QueryClientProvider
+- Keep client-side logic in component files, not pages
+- Use .then(mod => mod.ComponentName) for named exports
+- Apply this pattern to ALL dashboard pages consistently
+- Don't mix different patterns - use the same approach everywhere
+- Always use dynamic imports with ssr: false for client components
+- Add loading states with Loader2 component
+- Wrap data fetching components with QueryClientProvider
+- Keep client-side logic in component files, not pages
+- Use .then(mod => mod.ComponentName) for named exports
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+- Don't use unstable or deprecated Next.js config options
+- Keep page components minimal and focused on composition
+1. Place providers (Auth, Query) at root layout
+2. Mark dashboard pages as client components with 'use client'
+3. Keep page components minimal:
+```tsx
+'use client';
+import { ComponentName } from '@/components/path/ComponentName';
+export default function Page() {
+  return <ComponentName />;
+}
+```
+4. Move complex logic to component files
+5. Use dynamic imports only when needed for code splitting
+6. Keep providers at layout level, not page level
+
+### Common Mistakes to Avoid
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+1. Place providers (Auth, Query) at root layout
+2. Mark dashboard pages as client components with 'use client'
+3. Keep page components minimal:
+```tsx
+'use client';
+import { ComponentName } from '@/components/path/ComponentName';
+export default function Page() {
+  return <ComponentName />;
+}
+```
+4. Move complex logic to component files
+5. Use dynamic imports only when needed for code splitting
+6. Keep providers at layout level, not page level
+
+### Common Mistakes to Avoid
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+- Don't use unstable or deprecated Next.js config options
+- Keep page components minimal and focused on composition
+- Match import/export styles (named vs default)
+
+### Import/Export Patterns
+- Use default exports for page components
+- Use named exports for utility functions and hooks
+- Check component export style before importing
+- Use consistent export style within a module
+- When using dynamic imports with named exports, use .then(mod => mod.ComponentName)
+- When using dynamic imports with default exports, use .then(mod => mod.default)
+- Use default exports for page components
+- Use named exports for utility functions and hooks
+- Check component export style before importing
+- Use consistent export style within a module
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+- Don't wrap every page with providers
+- Don't use dynamic imports unless needed for code splitting
+- Don't mix server and client components in the same file
+- Don't put complex logic in page files
+- ✅ Migrated from Vite to Next.js App Router
 - ✅ Migrated from Vite to Next.js App Router
 
 ## Next.js App Router Guidelines
+- Pages using dynamic imports must be client components ('use client')
+- Pages using hooks must be client components ('use client')
+- Pages with dynamic imports should set ssr: false to avoid prerender errors
+- Settings pages should be client components ('use client')
+- Components imported by settings pages should be client components ('use client')
+- Pages using QueryClientProvider must wrap the dynamic import with the provider
+- Example dynamic import with loading state:
+```typescript
+const Component = dynamic(
+  () => import('@/components/MyComponent').then(mod => mod.MyComponent),
+  {
+    loading: () => <LoadingComponent />,
+    ssr: false
+  }
+);
+```
+- Pages using dynamic imports must be client components ('use client')
+- Pages using hooks must be client components ('use client')
+- Pages with dynamic imports should set ssr: false to avoid prerender errors
+- Settings pages should be client components ('use client')
+- Components imported by settings pages should be client components ('use client')
+- Example dynamic import with loading state:
+```typescript
+const Component = dynamic(
+  () => import('@/components/MyComponent').then(mod => mod.MyComponent),
+  {
+    loading: () => <LoadingComponent />,
+    ssr: false
+  }
+);
+```
 - Pages using dynamic imports must be client components ('use client')
 - Pages using hooks must be client components ('use client')
 - Pages with dynamic imports should set ssr: false to avoid prerender errors

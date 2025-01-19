@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ApplicationFormData, CapitalProduct } from '@/types/capital';
+import { ApplicationFormData } from '@/types/capital';
 import { Loader2 } from 'lucide-react';
 
 interface ApplicationFormProps {

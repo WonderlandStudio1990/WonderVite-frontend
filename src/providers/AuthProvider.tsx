@@ -3,7 +3,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { AUTH_STORAGE_KEY } from './auth-provider-variants';
+import { _AUTH_STORAGE_KEY } from './auth-provider-variants';
 
 interface AuthContextType {
   session: Session | null;

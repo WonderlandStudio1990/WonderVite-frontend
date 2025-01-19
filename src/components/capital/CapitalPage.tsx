@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ApplicationForm } from '@/components/capital/ApplicationForm';
 import { ApplicationsList } from '@/components/capital/ApplicationsList';
 import { CapitalProductCard } from '@/components/capital/CapitalProductCard';
-import { CapitalProduct, ApplicationFormData } from '@/types/capital';
+import { ApplicationFormData } from '@/types/capital';
 import type { Database } from '@/integrations/supabase/types';
 
 type WonderPayCapitalApplication = Database['public']['Tables']['wonderpay_capital_applications']['Insert'];

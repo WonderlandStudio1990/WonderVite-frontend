@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -29,9 +30,11 @@ export default function Home() {
           </h1>
           
           <div className="w-28 h-28 mx-auto transform hover:scale-105 transition-transform duration-300 bg-[#FFFFFF]">
-            <img 
+            <Image 
               src="/lovable-uploads/2cfe764c-e03d-4bd4-9aec-40a3f9d1a7ae.png" 
               alt="WonderPay Logo" 
+              width={200}
+              height={200}
               className="w-full h-full object-contain"
             />
           </div>

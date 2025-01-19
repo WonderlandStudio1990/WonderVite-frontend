@@ -2,6 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
 const CapitalPage = dynamic(
   () => import('@/components/capital/CapitalPage').then(mod => mod.CapitalPage),
@@ -16,5 +18,9 @@ const CapitalPage = dynamic(
 );
 
 export default function Page() {
-  return <CapitalPage />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <CapitalPage />
+    </QueryClientProvider>
+  );
 }

@@ -4,7 +4,7 @@ import { ContactsList } from '@/components/contacts/ContactsList';
 import { useState } from 'react';
 
 export default function Clients() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, _setSearchQuery] = useState('');
 
   return (
     <div className="container mx-auto py-8">

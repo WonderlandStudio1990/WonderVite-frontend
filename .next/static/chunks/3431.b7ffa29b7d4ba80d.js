@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3431],{73431:(e,n,r)=>{r.r(n),r.d(n,{InvoiceGenerator:()=>u});var s=r(95155);function u(){return(0,s.jsx)("div",{})}}}]);

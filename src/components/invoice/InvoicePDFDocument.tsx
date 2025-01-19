@@ -56,9 +56,6 @@ interface Props {
 }
 
 const InvoicePDFDocument: React.FC<Props> = ({ data }) => {
-  const calculateTotal = () => {
-    return data.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
-  };
 
   return (
     <Document>

@@ -2,8 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
-const OrganizationSettings = dynamic(
+const OrganizationSettingsPage = dynamic(
   () => import('@/components/settings/OrganizationSettings').then(mod => mod.OrganizationSettings),
   {
     loading: () => (
@@ -15,6 +17,10 @@ const OrganizationSettings = dynamic(
   }
 );
 
-export default function OrganizationSettingsPage() {
-  return <OrganizationSettings />;
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <OrganizationSettingsPage />
+    </QueryClientProvider>
+  );
 }

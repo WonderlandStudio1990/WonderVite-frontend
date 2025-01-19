@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 
@@ -7,9 +8,11 @@ const Header = () => {
     <header className="border-b bg-white/30 backdrop-blur-sm">
       <div className="flex h-16 items-center px-6">
         <div className="flex items-center gap-2">
-          <img 
-            src="/lovable-uploads/de0f3b54-1605-48f1-b6e4-4f2ddbf2f5db.png" 
-            alt="WonderPay Logo" 
+          <Image 
+            src="/lovable-uploads/de0f3b54-1605-48f1-b6e4-4f2ddbf2f5db.png"
+            alt="WonderPay Logo"
+            width={32}
+            height={32}
             className="h-8 w-auto"
           />
           <h2 className="text-2xl font-bold text-gray-900">WonderPay</h2>

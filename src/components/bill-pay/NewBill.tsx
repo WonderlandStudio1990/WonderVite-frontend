@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 
 interface NewBillProps {
   onSubmit: (payable: Payable) => Promise<void>;
-  initialData?: Partial<Payable>;
+  _initialData?: Partial<Payable>;
 }
 
-export function NewBill({ onSubmit, initialData }: NewBillProps) {
+export function NewBill({ onSubmit, _initialData }: NewBillProps) {
   const handleSubmit = async () => {
     // TODO: Implement form submission
     await onSubmit({

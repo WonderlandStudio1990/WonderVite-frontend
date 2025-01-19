@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
@@ -76,9 +77,11 @@ const Login = () => {
           </h1>
           
           <div className="w-20 h-20 mx-auto transform hover:scale-105 transition-transform duration-300">
-            <img 
+            <Image 
               src="/lovable-uploads/2cfe764c-e03d-4bd4-9aec-40a3f9d1a7ae.png" 
               alt="WonderPay Logo" 
+              width={80}
+              height={80}
               className="w-full h-full object-contain"
             />
           </div>

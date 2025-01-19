@@ -2,8 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
-const AccountingSettings = dynamic(
+const AccountingSettingsPage = dynamic(
   () => import('@/components/settings/AccountingSettings').then(mod => mod.AccountingSettings),
   {
     loading: () => (
@@ -15,6 +17,10 @@ const AccountingSettings = dynamic(
   }
 );
 
-export default function AccountingSettingsPage() {
-  return <AccountingSettings />;
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AccountingSettingsPage />
+    </QueryClientProvider>
+  );
 }

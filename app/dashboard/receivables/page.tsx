@@ -1,30 +1,26 @@
 'use client';
 
-import { Card } from "@/components/ui/card";
-import { ReceivableItem } from "@/components/receivables/ReceivableItem";
-import { StatusCard } from "@/components/receivables/StatusCard";
+import dynamic from 'next/dynamic';
+import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
-export default function ReceivablesPage() {
-  return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatusCard title="Total Receivables" amount={0} />
-        <StatusCard title="Overdue" amount={0} status="sent" />
-        <StatusCard title="Due Soon" amount={0} status="draft" />
-        <StatusCard title="Paid" amount={0} status="paid" />
+const ReceivablesPage = dynamic(
+  () => import('@/components/receivables/ReceivablesPage').then(mod => mod.ReceivablesPage),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-      <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Recent Receivables</h2>
-        <div className="space-y-4">
-          <ReceivableItem
-            amount={0}
-            currency="USD"
-            status="pending"
-            date={new Date().toISOString()}
-            description="No receivables found"
-          />
-        </div>
-      </Card>
-    </div>
+    ),
+    ssr: false
+  }
+);
+
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ReceivablesPage />
+    </QueryClientProvider>
   );
 }

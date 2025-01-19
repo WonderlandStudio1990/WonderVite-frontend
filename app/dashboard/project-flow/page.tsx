@@ -2,9 +2,11 @@
 
 import dynamic from 'next/dynamic';
 import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
 const ProjectFlowPage = dynamic(
-  () => import('@/components/project-flow/ProjectFlowPage'),
+  () => import('@/components/project-flow/ProjectFlowPage').then(mod => mod.default),
   {
     loading: () => (
       <div className="flex items-center justify-center h-screen">
@@ -15,6 +17,10 @@ const ProjectFlowPage = dynamic(
   }
 );
 
-export default function ProjectFlow() {
-  return <ProjectFlowPage />;
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ProjectFlowPage />
+    </QueryClientProvider>
+  );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 // Removed avatar component since it was cleaned up
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -68,7 +69,13 @@ const ProfileSettings = () => {
             <h2 className="text-lg text-gray-600">Picture</h2>
             <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
               {profile.avatar ? (
-                <img src={profile.avatar} alt="Profile" className="w-full h-full rounded-full" />
+                <Image 
+  src={profile.avatar || '/placeholder.svg'} 
+  alt="Profile" 
+  width={128}
+  height={128}
+  className="w-full h-full rounded-full"
+/>
               ) : (
                 <span className="text-gray-500 text-2xl">
                   {profile.firstName?.[0]?.toUpperCase()}

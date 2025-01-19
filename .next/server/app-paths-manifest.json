@@ -1,4 +1,23 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/login/page": "app/login/page.js"
+  "/dashboard/bill-pay/generate/page": "app/dashboard/bill-pay/generate/page.js",
+  "/dashboard/bill-pay/page": "app/dashboard/bill-pay/page.js",
+  "/dashboard/bill-pay/new/page": "app/dashboard/bill-pay/new/page.js",
+  "/dashboard/capital/page": "app/dashboard/capital/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/clients/page": "app/dashboard/clients/page.js",
+  "/dashboard/organization-settings/page": "app/dashboard/organization-settings/page.js",
+  "/dashboard/project-flow/page": "app/dashboard/project-flow/page.js",
+  "/dashboard/quick-pay/page": "app/dashboard/quick-pay/page.js",
+  "/dashboard/receivables/page": "app/dashboard/receivables/page.js",
+  "/dashboard/settings/accounting/page": "app/dashboard/settings/accounting/page.js",
+  "/dashboard/settings/address/page": "app/dashboard/settings/address/page.js",
+  "/dashboard/settings/bank-accounts/page": "app/dashboard/settings/bank-accounts/page.js",
+  "/dashboard/settings/cards/page": "app/dashboard/settings/cards/page.js",
+  "/dashboard/settings/members/page": "app/dashboard/settings/members/page.js",
+  "/dashboard/settings/profile/page": "app/dashboard/settings/profile/page.js",
+  "/dashboard/bill-pay/[invoiceId]/page": "app/dashboard/bill-pay/[invoiceId]/page.js",
+  "/dashboard/receivables/[invoiceId]/page": "app/dashboard/receivables/[invoiceId]/page.js"
 }

@@ -1,35 +1,20 @@
-import { Suspense } from 'react';
-import { PlasmicWrapper } from "@/components/plasmic/PlasmicWrapper";
-import { QueryProvider } from '@/providers/QueryProvider';
-import { AuthProvider } from '@/providers/AuthProvider';
-import { SettingsProvider } from '@/contexts/SettingsContext';
-import './globals.css';
+import { AuthProvider } from '@/providers/AuthProvider'
+import { QueryProvider } from '@/providers/QueryProvider'
 
-export const metadata = {
-  title: 'WonderVite Frontend',
-  description: 'Financial operations platform',
-};
-
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
       <body>
-        <PlasmicWrapper>
-          <QueryProvider>
-            <AuthProvider>
-              <SettingsProvider>
-                <Suspense fallback={<div>Loading...</div>}>
-                  {children}
-                </Suspense>
-              </SettingsProvider>
-            </AuthProvider>
-          </QueryProvider>
-        </PlasmicWrapper>
+        <QueryProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
-  );
+  )
 }

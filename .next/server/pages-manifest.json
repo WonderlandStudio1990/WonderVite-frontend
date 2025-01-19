@@ -1,1 +1,11 @@
-{}
+{
+  "/_app": "pages/_app.js",
+  "/Clients": "pages/Clients.js",
+  "/_error": "pages/_error.js",
+  "/Home": "pages/Home.js",
+  "/settings/BankAccountsSettings": "pages/settings/BankAccountsSettings.js",
+  "/Receivables": "pages/Receivables.js",
+  "/settings/CardsSettings": "pages/settings/CardsSettings.js",
+  "/settings/ProfileSettings": "pages/settings/ProfileSettings.js",
+  "/_document": "pages/_document.js"
+}

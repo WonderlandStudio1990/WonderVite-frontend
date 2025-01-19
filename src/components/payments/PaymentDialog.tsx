@@ -1,9 +1,10 @@
 'use client';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { PaymentMethodSelector, type PaymentMethod } from './PaymentMethodSelector';
+import { PaymentMethodSelector } from './PaymentMethodSelector';
 import { PaymentSummary } from './PaymentSummary';
 import { useState } from 'react';
+import { type PaymentMethod } from '@/types/common';
 
 export interface PaymentDialogProps {
   open: boolean;
@@ -29,9 +30,8 @@ export function PaymentDialog({ open, onOpenChange, amount, onPaymentComplete }:
         <div className="grid gap-4 py-4">
           <PaymentSummary amount={amount} />
           <PaymentMethodSelector
-            amount={amount}
             selectedMethod={selectedMethod}
-            onMethodSelect={handleMethodSelect}
+            onSelect={handleMethodSelect}
           />
         </div>
       </DialogContent>

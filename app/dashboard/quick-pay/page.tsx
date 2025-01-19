@@ -2,6 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
 const QuickPayPage = dynamic(
   () => import('@/components/quick-pay/QuickPayPage').then(mod => mod.QuickPayPage),
@@ -16,5 +18,9 @@ const QuickPayPage = dynamic(
 );
 
 export default function Page() {
-  return <QuickPayPage />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <QuickPayPage />
+    </QueryClientProvider>
+  );
 }

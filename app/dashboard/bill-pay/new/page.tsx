@@ -1,15 +1,26 @@
 'use client';
 
-import { NewBill } from '@/components/bill-pay/NewBill';
-import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { Loader2 } from "lucide-react";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/queryClient';
 
-export default function NewBillPage() {
-  const router = useRouter();
+const NewBillPage = dynamic(
+  () => import('@/components/bill-pay/NewBill').then(mod => mod.NewBill),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    ),
+    ssr: false
+  }
+);
 
-  const handleSubmit = async () => {
-    // TODO: Implement bill submission
-    router.push('/dashboard/bill-pay');
-  };
-
-  return <NewBill onSubmit={handleSubmit} />;
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <NewBillPage onSubmit={async () => {}} />
+    </QueryClientProvider>
+  );
 }

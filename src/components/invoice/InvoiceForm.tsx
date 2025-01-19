@@ -15,10 +15,10 @@ interface FormData {
 
 interface InvoiceFormProps {
   onSubmit: (data: FormData) => Promise<void>;
-  initialData?: Partial<FormData>;
+  _initialData?: Partial<FormData>; // Changed initialData to _initialData
 }
 
-export function InvoiceForm({ onSubmit, initialData }: InvoiceFormProps) {
+export function InvoiceForm({ onSubmit, _initialData }: InvoiceFormProps) { // Changed initialData to _initialData
   const handleSubmit = async () => {
     // TODO: Implement form submission
     await onSubmit({

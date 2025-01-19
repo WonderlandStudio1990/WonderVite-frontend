@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { Session } from '@supabase/supabase-js';
 
-export const AUTH_STORAGE_KEY = 'auth_session';
+export const _AUTH_STORAGE_KEY = 'auth_session';
 
 export interface AuthContextType {
   session: Session | null;

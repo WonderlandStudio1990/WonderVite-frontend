@@ -1,30 +1,126 @@
 {
-  "../app/login/page.tsx -> @/components/auth/Login": {
-    "id": "../app/login/page.tsx -> @/components/auth/Login",
+  "../app/dashboard/bill-pay/generate/page.tsx -> @/components/invoice/InvoiceGenerator": {
+    "id": 73431,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_auth_Login_tsx.js"
+      "static/chunks/3431.b7ffa29b7d4ba80d.js"
+    ]
+  },
+  "../app/dashboard/bill-pay/new/page.tsx -> @/components/bill-pay/NewBill": {
+    "id": 56365,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/6365.6754e831fdfe32a5.js"
+    ]
+  },
+  "../app/dashboard/bill-pay/page.tsx -> @/components/bill-pay/BillPayPage": {
+    "id": 78888,
+    "files": [
+      "static/chunks/4b1a69f1-09cd98d8787e5782.js",
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/5974-d3f3502e56bae6b4.js",
+      "static/chunks/7510-ac1174e203e7284a.js",
+      "static/chunks/5745-54bcc41400eacb17.js",
+      "static/chunks/6936-d00a9c49896b1b6b.js",
+      "static/chunks/1201.747c4f07c966edd3.js",
+      "static/chunks/8888.7348a6466e9d06b9.js"
+    ]
+  },
+  "../app/dashboard/capital/page.tsx -> @/components/capital/CapitalPage": {
+    "id": 41869,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/5974-d3f3502e56bae6b4.js",
+      "static/chunks/1869.9a0ea89db11cb35d.js"
+    ]
+  },
+  "../app/dashboard/organization-settings/page.tsx -> @/components/settings/OrganizationSettings": {
+    "id": 753,
+    "files": [
+      "static/chunks/753.e763490c32c81f91.js"
+    ]
+  },
+  "../app/dashboard/page.tsx -> @/components/dashboard/DashboardPage": {
+    "id": 70378,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/5974-d3f3502e56bae6b4.js",
+      "static/chunks/7510-ac1174e203e7284a.js",
+      "static/chunks/5745-54bcc41400eacb17.js",
+      "static/chunks/6201.f49f18cd4f238e78.js",
+      "static/chunks/378.906f05fe0f5ee327.js"
+    ]
+  },
+  "../app/dashboard/project-flow/page.tsx -> @/components/project-flow/ProjectFlowPage": {
+    "id": 72046,
+    "files": [
+      "static/chunks/5974-d3f3502e56bae6b4.js",
+      "static/chunks/2046.72257a60c0b29f67.js"
+    ]
+  },
+  "../app/dashboard/quick-pay/page.tsx -> @/components/quick-pay/QuickPayPage": {
+    "id": 91356,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/1356.d6b1fca0aaee4ffe.js"
+    ]
+  },
+  "../app/dashboard/receivables/page.tsx -> @/components/receivables/ReceivablesPage": {
+    "id": 24081,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/4081.188ee6d72cc62109.js"
+    ]
+  },
+  "../app/dashboard/settings/accounting/page.tsx -> @/components/settings/AccountingSettings": {
+    "id": 30947,
+    "files": [
+      "static/chunks/947.3d4d7091574722c9.js"
+    ]
+  },
+  "../app/dashboard/settings/cards/page.tsx -> @/pages/settings/CardsSettings": {
+    "id": 22749,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/2749.9ae5235cfcd6ec25.js"
+    ]
+  },
+  "../app/dashboard/settings/members/page.tsx -> @/components/settings/MembersSettings": {
+    "id": 27207,
+    "files": [
+      "static/chunks/7207.c11625b4336d310c.js"
+    ]
+  },
+  "../app/login/page.tsx -> @/components/auth/Login": {
+    "id": 53281,
+    "files": [
+      "static/chunks/1181-38c82a2889b137d7.js",
+      "static/chunks/5974-d3f3502e56bae6b4.js",
+      "static/chunks/1359-2418932ec637675d.js",
+      "static/chunks/4535.35f98fc232161939.js",
+      "static/chunks/3281.c560083ce0364238.js"
     ]
   },
   "../node_modules/@supabase/auth-js/dist/module/lib/helpers.js -> @supabase/node-fetch": {
-    "id": "../node_modules/@supabase/auth-js/dist/module/lib/helpers.js -> @supabase/node-fetch",
+    "id": 59895,
     "files": []
   },
   "../node_modules/@supabase/functions-js/dist/module/helper.js -> @supabase/node-fetch": {
-    "id": "../node_modules/@supabase/functions-js/dist/module/helper.js -> @supabase/node-fetch",
+    "id": 59895,
     "files": []
   },
   "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> @supabase/node-fetch": {
-    "id": "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> @supabase/node-fetch",
+    "id": 59895,
     "files": []
   },
   "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> ws": {
-    "id": "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> ws",
+    "id": 66735,
     "files": [
-      "static/chunks/_app-pages-browser_node_modules_ws_browser_js.js"
+      "static/chunks/6735.dce668de27a428b7.js",
+      "static/chunks/1591.8c7e5167e8d445ff.js"
     ]
   },
   "../node_modules/@supabase/storage-js/dist/module/lib/helpers.js -> @supabase/node-fetch": {
-    "id": "../node_modules/@supabase/storage-js/dist/module/lib/helpers.js -> @supabase/node-fetch",
+    "id": 59895,
     "files": []
   }
 }

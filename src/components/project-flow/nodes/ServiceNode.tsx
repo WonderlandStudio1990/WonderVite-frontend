@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Handle, Position } from 'reactflow';
-import { Cloud, Database, Server } from 'lucide-react';
+import { Cloud, Server } from 'lucide-react';
 
 interface ServiceNodeData {
   label: string;

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[947],{30947:(e,n,t)=>{t.r(n),t.d(n,{AccountingSettings:()=>u});var s=t(95155);function u(e){let{_settings:n}=e;return(0,s.jsx)("div",{})}}}]);

@@ -9,7 +9,7 @@ const nextConfig = {
       enabled: true
     }
   },
-  // Exclude Supabase Edge Functions from Next.js build
+  pageExtensions: ['tsx', 'ts'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.watchOptions = {
